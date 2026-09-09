@@ -1,0 +1,16 @@
+{
+  "name": "Survey",
+  "short_name": "Survey",
+  "description": "A calm, minimal survey.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fcfcfa",
+  "theme_color": "#fcfcfa",
+  "icons": [
+    {
+      "src": "/apple-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}
