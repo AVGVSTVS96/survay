@@ -1,33 +1,40 @@
 # survay
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [v0](https://v0.app).
+A small, calm survey you can host yourself. One survey per deploy: people answer one question at a time, and you edit questions and read results from a password-protected dashboard.
 
-## Built with v0
+![survay](.github/screenshot.png)
 
-This repository is linked to a [v0](https://v0.app) project. You can continue developing by visiting the link below -- start new chats to make changes, and v0 will push commits directly to this repo. Every merge to `main` will automatically deploy.
+- Four question types: multiple choice, checkboxes, rating, text
+- Keyboard friendly, resumable on refresh, works on phones
+- Results with bars and averages, CSV export
+- Next.js, Postgres, Drizzle
 
-[Continue working on v0 →](https://v0.app/chat/projects/prj_PYsJXbhaRrl6wYWWHUwWjSSzQCjy)
+## Deploy
 
-## Getting Started
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FAVGVSTVS96%2Fsurvay&env=ADMIN_PASSWORD&envDescription=Password%20for%20%2Fadmin.%20Use%20a%20long%20random%20one.&products=%5B%7B%22type%22%3A%22integration%22%2C%22protocol%22%3A%22storage%22%2C%22productSlug%22%3A%22neon%22%2C%22integrationSlug%22%3A%22neon%22%7D%5D)
 
-First, run the development server:
+The button adds a Neon database and asks for `ADMIN_PASSWORD`. Use a long random password (`openssl rand -base64 24`): it's the only thing guarding `/admin`, and changing it signs everyone out. For extra safety, add a [Vercel Firewall](https://vercel.com/docs/vercel-firewall) rate limit rule on `/admin/login`.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+Then create the tables once, from a clone of your repo: `vercel env pull .env.local && pnpm install && pnpm db:push`.
+
+## Run locally
+
+```sh
+cp .env.example .env.local   # set DATABASE_URL and ADMIN_PASSWORD
+pnpm install && pnpm db:push && pnpm db:seed
+pnpm dev                     # survey at /, dashboard at /admin
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+`db:seed` adds a demo survey when there are no questions yet.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Options
 
-## Learn More
+| Env | What it does |
+| --- | --- |
+| `PUBLIC_RESULTS=1` | Shows everyone the results on `/results` and after they submit. Text answers stay private. |
 
-To learn more, take a look at the following resources:
+Add `?embed=1` to `/` or `/results` to drop the page padding and post the page height to the parent window as `{ type: "survay:height", height }`, for showing it in an iframe.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-- [v0 Documentation](https://v0.app/docs) - learn about v0 and how to use it.
+## License
+
+MIT
