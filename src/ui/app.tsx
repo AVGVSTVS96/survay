@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState, type FormEvent, type ReactNode } from
 import type { AnswerRow } from "../stats.ts";
 import type { Survey } from "../store.ts";
 import { sandbox, server, type Snapshot } from "./api.ts";
-import { session, useEmbed, useLive } from "./browser.ts";
+import { session, toParent, useEmbed, useLive } from "./browser.ts";
 import { Button } from "./button.tsx";
 import { Dashboard } from "./dashboard.tsx";
 import { MINE, ResultsView, type Mine } from "./results.tsx";
@@ -70,6 +70,8 @@ function Results({ initial, embed }: { initial: Snapshot; embed: boolean }) {
       .catch(() => {});
   }, []);
   useLive(refresh);
+
+  useEffect(() => toParent({ type: "survay:results", survey, stats }), [survey, stats]);
 
   useEffect(() => {
     const read = () => setMine((session.get(MINE) as Mine | null) ?? {});

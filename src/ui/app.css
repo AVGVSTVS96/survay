@@ -14,7 +14,7 @@
   --color-border: var(--border);
   --color-ring: var(--ring);
   --color-destructive: var(--destructive);
-  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 :root {
@@ -112,7 +112,7 @@ html[data-embed] main {
     @apply text-muted-foreground transition-colors hover:text-foreground;
   }
   .enter {
-    animation: enter 280ms var(--ease-out) both;
+    animation: enter 240ms var(--ease-out) both;
   }
   .grow-x {
     transform-origin: left;

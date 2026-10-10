@@ -416,9 +416,9 @@ function Choice({
       >
         <span
           className={cn(
-            "bg-primary-foreground transition-transform duration-200 ease-out",
+            "bg-primary-foreground transition-[transform,opacity] duration-200 ease-out",
             role === "radio" ? "h-2 w-2 rounded-full" : "h-2.5 w-2.5 rounded-[2px]",
-            checked ? "scale-100" : "scale-0",
+            checked ? "scale-100 opacity-100" : "scale-50 opacity-0",
           )}
         />
       </span>

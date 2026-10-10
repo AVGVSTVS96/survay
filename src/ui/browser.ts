@@ -22,18 +22,40 @@ export function navigate(search: string, { replace = false } = {}) {
   dispatchEvent(new Event(NAVIGATE));
 }
 
-export const toParent = (message: { type: `survay:${string}`; [key: string]: unknown }) => {
-  if (parent !== window) parent.postMessage(message, "*");
+type Message = { type: `survay:${string}`; [key: string]: unknown };
+
+const sent = new Map<string, Message>();
+const replies = new Set<() => void>();
+
+export const toParent = (message: Message) => {
+  if (parent === window) return;
+  sent.set(message.type, message);
+  parent.postMessage(message, "*");
 };
+
+if (typeof window !== "undefined" && window.parent !== window)
+  addEventListener("message", (event: MessageEvent<{ type?: unknown }>) => {
+    if (event.source !== parent || event.data.type !== "survay:hello") return;
+    for (const message of sent.values()) parent.postMessage(message, "*");
+    for (const reply of replies) reply();
+  });
 
 export function useEmbed(embed: boolean) {
   useEffect(() => {
     if (!embed) return;
     const post = () =>
       toParent({ type: "survay:height", height: Math.ceil(document.body.getBoundingClientRect().height) });
+    const escape = (e: KeyboardEvent) => e.key === "Escape" && toParent({ type: "survay:escape" });
     const observer = new ResizeObserver(post);
     observer.observe(document.body);
-    return () => observer.disconnect();
+    replies.add(post);
+    post();
+    addEventListener("keydown", escape);
+    return () => {
+      observer.disconnect();
+      replies.delete(post);
+      removeEventListener("keydown", escape);
+    };
   }, [embed]);
 }
 
