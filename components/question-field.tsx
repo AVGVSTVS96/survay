@@ -1,51 +1,69 @@
 "use client"
 
-import type { AnswerValue, Question } from "@/lib/db/schema"
+import type { Question } from "@/lib/db/schema"
+import { TEXT_LIMIT } from "@/lib/questions"
 import { cn } from "@/lib/utils"
+import type { KeyboardEvent, MouseEvent } from "react"
 
 type Props = {
   question: Question
-  value: AnswerValue | undefined
-  onChange: (value: AnswerValue) => void
+  value: unknown
+  labelledBy: string
+  onChange: (value: unknown) => void
+  onPick?: () => void
 }
 
-export function QuestionField({ question, value, onChange }: Props) {
+const STEPS: Record<string, number> = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }
+
+function arrowKeys(select: boolean) {
+  return (e: KeyboardEvent<HTMLDivElement>) => {
+    const step = STEPS[e.key]
+    if (!step) return
+    const items = [...e.currentTarget.querySelectorAll<HTMLButtonElement>("[role=radio],[role=checkbox]")]
+    const next = items[(items.indexOf(document.activeElement as HTMLButtonElement) + step + items.length) % items.length]
+    e.preventDefault()
+    next.focus()
+    if (select) next.click()
+  }
+}
+
+const isPointer = (e: MouseEvent) => e.detail > 0
+
+export function QuestionField({ question, value, labelledBy, onChange, onPick }: Props) {
   switch (question.kind) {
     case "single":
       return (
-        <div className="flex flex-col gap-2">
-          {question.options.map((opt) => {
-            const selected = value === opt
-            return (
-              <Choice
-                key={opt}
-                label={opt}
-                selected={selected}
-                shape="round"
-                onClick={() => onChange(opt)}
-              />
-            )
-          })}
+        <div role="radiogroup" aria-labelledby={labelledBy} onKeyDown={arrowKeys(true)} className="flex flex-col gap-2">
+          {question.options.map((opt, i) => (
+            <Choice
+              key={opt}
+              label={opt}
+              role="radio"
+              checked={value === opt}
+              tabbable={value === opt || (!question.options.includes(value as string) && i === 0)}
+              onClick={(e) => {
+                onChange(opt)
+                if (isPointer(e)) onPick?.()
+              }}
+            />
+          ))}
         </div>
       )
 
     case "multi": {
-      const arr = Array.isArray(value) ? value : []
+      const picked = Array.isArray(value) ? value : []
       return (
-        <div className="flex flex-col gap-2">
+        <div role="group" aria-labelledby={labelledBy} onKeyDown={arrowKeys(false)} className="flex flex-col gap-2">
           {question.options.map((opt) => {
-            const selected = arr.includes(opt)
+            const checked = picked.includes(opt)
             return (
               <Choice
                 key={opt}
                 label={opt}
-                selected={selected}
-                shape="square"
-                onClick={() =>
-                  onChange(
-                    selected ? arr.filter((o) => o !== opt) : [...arr, opt],
-                  )
-                }
+                role="checkbox"
+                checked={checked}
+                tabbable
+                onClick={() => onChange(checked ? picked.filter((o) => o !== opt) : [...picked, opt])}
               />
             )
           })}
@@ -55,17 +73,18 @@ export function QuestionField({ question, value, onChange }: Props) {
 
     case "rating": {
       const max = question.scaleMax ?? 5
-      const current = typeof value === "number" ? value : 0
       return (
-        <div className="flex flex-wrap gap-2">
+        <div role="radiogroup" aria-labelledby={labelledBy} onKeyDown={arrowKeys(true)} className="flex flex-wrap gap-2">
           {Array.from({ length: max }, (_, i) => i + 1).map((n) => {
-            const active = current === n
+            const active = value === n
             return (
               <button
                 key={n}
                 type="button"
-                aria-pressed={active}
+                role="radio"
+                aria-checked={active}
                 aria-label={`${n} of ${max}`}
+                tabIndex={active || (typeof value !== "number" && n === 1) ? 0 : -1}
                 onClick={() => onChange(n)}
                 className={cn(
                   "flex h-12 min-w-12 flex-1 items-center justify-center rounded-lg border transition-colors",
@@ -82,25 +101,24 @@ export function QuestionField({ question, value, onChange }: Props) {
       )
     }
 
-    case "text":
-    default: {
-      const long = (question.description ?? "").length > 0 || question.kind === "text"
-      const str = typeof value === "string" ? value : ""
-      return long ? (
+    case "text": {
+      const props = {
+        "aria-labelledby": labelledBy,
+        value: typeof value === "string" ? value : "",
+        maxLength: TEXT_LIMIT,
+        placeholder: "Type your answer",
+        className:
+          "w-full rounded-lg border border-border bg-card px-4 py-3 text-foreground placeholder:text-subtle outline-none transition-colors focus:border-foreground/50",
+      }
+      return question.multiline ? (
         <textarea
-          value={str}
-          onChange={(e) => onChange(e.target.value)}
+          {...props}
           rows={4}
-          placeholder="Type your answer"
-          className="w-full resize-none rounded-lg border border-border bg-card px-4 py-3 text-foreground placeholder:text-subtle outline-none transition-colors focus:border-foreground/50"
+          onChange={(e) => onChange(e.target.value)}
+          className={cn(props.className, "resize-none")}
         />
       ) : (
-        <input
-          value={str}
-          onChange={(e) => onChange(e.target.value)}
-          placeholder="Type your answer"
-          className="w-full rounded-lg border border-border bg-card px-4 py-3 text-foreground placeholder:text-subtle outline-none transition-colors focus:border-foreground/50"
-        />
+        <input {...props} onChange={(e) => onChange(e.target.value)} />
       )
     }
   }
@@ -108,23 +126,27 @@ export function QuestionField({ question, value, onChange }: Props) {
 
 function Choice({
   label,
-  selected,
-  shape,
+  role,
+  checked,
+  tabbable,
   onClick,
 }: {
   label: string
-  selected: boolean
-  shape: "round" | "square"
-  onClick: () => void
+  role: "radio" | "checkbox"
+  checked: boolean
+  tabbable: boolean
+  onClick: (e: MouseEvent) => void
 }) {
   return (
     <button
       type="button"
-      aria-pressed={selected}
+      role={role}
+      aria-checked={checked}
+      tabIndex={tabbable ? 0 : -1}
       onClick={onClick}
       className={cn(
         "flex min-h-12 items-center gap-3 rounded-lg border px-4 py-3 text-left transition-colors",
-        selected
+        checked
           ? "border-foreground bg-accent text-foreground"
           : "border-border text-muted-foreground hover:border-foreground/40",
       )}
@@ -133,20 +155,20 @@ function Choice({
         aria-hidden
         className={cn(
           "flex h-5 w-5 shrink-0 items-center justify-center border transition-colors",
-          shape === "round" ? "rounded-full" : "rounded",
-          selected ? "border-foreground bg-foreground" : "border-border",
+          role === "radio" ? "rounded-full" : "rounded",
+          checked ? "border-foreground bg-foreground" : "border-border",
         )}
       >
-        {selected && (
+        {checked && (
           <span
             className={cn(
               "bg-primary-foreground",
-              shape === "round" ? "h-2 w-2 rounded-full" : "h-2.5 w-2.5 rounded-[2px]",
+              role === "radio" ? "h-2 w-2 rounded-full" : "h-2.5 w-2.5 rounded-[2px]",
             )}
           />
         )}
       </span>
-      <span className={cn(selected && "text-em")}>{label}</span>
+      <span className={cn(checked && "text-em")}>{label}</span>
     </button>
   )
 }
