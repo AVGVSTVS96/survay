@@ -1,8 +1,7 @@
-node_modules
-.next/
+node_modules/
+data/
+.scratch/
 .vercel
 .env*
 !.env.example
-*.tsbuildinfo
-next-env.d.ts
 .DS_Store

@@ -10,11 +10,11 @@
 
 ## What it is and isn't
 
-| it is | it isn't |
-| --- | --- |
-| a form you fill in, one bubble at a time | a survey platform with workspaces and seats |
-| one survey on your own Vercel and Neon | a hosted service, a waitlist |
-| a bubble sheet: printed salmon, graphite marks | a Typeform clone with gradients and emoji |
+| it is                                          | it isn't                                    |
+| ---------------------------------------------- | ------------------------------------------- |
+| a form you fill in, one bubble at a time       | a survey platform with workspaces and seats |
+| one survey on your own Vercel and Neon         | a hosted service, a waitlist                |
+| a bubble sheet: printed salmon, graphite marks | a Typeform clone with gradients and emoji   |
 
 ## The visual system
 
@@ -32,16 +32,16 @@ One family with a width axis, so the wordmark and the prose share bones.
 
 Answer sheets print the form in a "dropout" ink the scanner ignores, so only your pencil marks count. survay keeps that split.
 
-| token | light | dark | use |
-| --- | --- | --- | --- |
-| `--paper` | `#f5f3ed` | `#0f0e0d` | the page: a step below the app's own background |
-| `--sheet` | `oklch(0.992 0.002 90)` | `oklch(0.17 0.004 70)` | the app's `--background`, exactly; anything holding the app sits on it |
-| `--ink` | `#1d1c1a` | `#edebe6` | text, filled bubbles, primary buttons |
-| `--ink-2` | `#5d5a54` | `#a5a29b` | ledes, secondary text |
-| `--ink-3` | `#6f6b64` | `#8a867f` | URLs, captions |
-| `--form` | `#e8735c` | `#f08a73` | the printed form: rules, sheet borders, empty bubbles |
-| `--form-ink` | `#b13f28` | `#f49c86` | text printed in the form color (passes 4.5:1 on both fields) |
-| `--form-line` | `#f1b8aa` | `#3a2c27` | soft rules inside the form |
+| token         | light                   | dark                   | use                                                                    |
+| ------------- | ----------------------- | ---------------------- | ---------------------------------------------------------------------- |
+| `--paper`     | `#f5f3ed`               | `#0f0e0d`              | the page: a step below the app's own background                        |
+| `--sheet`     | `oklch(0.992 0.002 90)` | `oklch(0.17 0.004 70)` | the app's `--background`, exactly; anything holding the app sits on it |
+| `--ink`       | `#1d1c1a`               | `#edebe6`              | text, filled bubbles, primary buttons                                  |
+| `--ink-2`     | `#5d5a54`               | `#a5a29b`              | ledes, secondary text                                                  |
+| `--ink-3`     | `#6f6b64`               | `#8a867f`              | URLs, captions                                                         |
+| `--form`      | `#e8735c`               | `#f08a73`              | the printed form: rules, sheet borders, empty bubbles                  |
+| `--form-ink`  | `#b13f28`               | `#f49c86`              | text printed in the form color (passes 4.5:1 on both fields)           |
+| `--form-line` | `#f1b8aa`               | `#3a2c27`              | soft rules inside the form                                             |
 
 Rule: **salmon is the form, graphite is the answer.** Anything you can mark or press is ink; anything printed to guide you is salmon. Dark keeps salmon light (a light brand color stays light) and lays it on a near-neutral field a step below the app's dark UI, so the iframe and the page never fight.
 
@@ -86,11 +86,11 @@ Hero mockups in `directions/` (shots in the job folder):
 
 ## Assets
 
-| file | source | size |
-| --- | --- | --- |
-| `site/public/og.png` | `assets/og.html` | 1200×630 |
-| `.github/header-light.png`, `header-dark.png` | `assets/readme-{light,dark}.html` | 838×220 @2x |
-| `site/public/apple-touch-icon.png`, `icon-512.png` | `assets/icon.html` | 180, 512 |
-| `site/public/favicon.svg` | `logo/gen.mjs` | themed SVG |
+| file                                               | source                            | size        |
+| -------------------------------------------------- | --------------------------------- | ----------- |
+| `site/public/og.png`                               | `assets/og.html`                  | 1200×630    |
+| `.github/header-light.png`, `header-dark.png`      | `assets/readme-{light,dark}.html` | 838×220 @2x |
+| `site/public/apple-touch-icon.png`, `icon-512.png` | `assets/icon.html`                | 180, 512    |
+| `site/public/favicon.svg`                          | `logo/gen.mjs`                    | themed SVG  |
 
 Rebuild: `bun run logo`, then `bun ~/.agents/skills/brand-it/scripts/shoot.mjs brand/assets/og.html 1200x630 public/og.png` (and the same for the others, sizes above).

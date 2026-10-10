@@ -46,14 +46,14 @@ Your copy runs on your Vercel account with your own database.
 
 ## CTA labels
 
-| where | label | goes to |
-| --- | --- | --- |
-| hero, primary | `Deploy your own` | #self-host |
-| hero, secondary | `GitHub` | github.com/AVGVSTVS96/survay |
-| dashboard frame | `Try it. Nothing here is saved.` | (label on the rebuilt editor) |
-| results section | `Open full results` | demo `/results` |
-| self-host | Vercel's own Deploy button image, alt `Deploy to Vercel` | Vercel clone URL |
-| footer | `GitHub` | github.com/AVGVSTVS96/survay |
+| where           | label                                                    | goes to                       |
+| --------------- | -------------------------------------------------------- | ----------------------------- |
+| hero, primary   | `Deploy your own`                                        | #self-host                    |
+| hero, secondary | `GitHub`                                                 | github.com/AVGVSTVS96/survay  |
+| dashboard frame | `Try it. Nothing here is saved.`                         | (label on the rebuilt editor) |
+| results section | `Open full results`                                      | demo `/results`               |
+| self-host       | Vercel's own Deploy button image, alt `Deploy to Vercel` | Vercel clone URL              |
+| footer          | `GitHub`                                                 | github.com/AVGVSTVS96/survay  |
 
 ## Meta
 

@@ -1,50 +1,166 @@
 <!doctype html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<title>survay og image</title>
-<style>
-@font-face { font-family: Archivo; src: url(../fonts/archivo-var.woff2) format("woff2"); font-weight: 100 900; font-stretch: 62% 125% }
-@font-face { font-family: Geist; src: url(../fonts/geist-var.woff2) format("woff2"); font-weight: 100 900 }
-* { margin: 0; box-sizing: border-box }
-html, body { width: 1200px; height: 630px; overflow: hidden }
-body { background: #f5f3ed; color: #1d1c1a; font-family: Archivo, sans-serif; display: grid; grid-template-columns: 560px 1fr; gap: 56px; padding: 64px 64px 0 72px; position: relative }
-.word { width: 500px; margin: 30px 0 0 -6px }
-h1 { margin-top: 48px; font-size: 46px; line-height: 1.04; font-weight: 680; font-stretch: 112%; letter-spacing: -0.03em }
-.sheet { background: oklch(0.992 0.002 90); border: 1.5px solid #e8735c; border-radius: 6px; height: 640px; display: grid; grid-template-columns: 26px 1fr; grid-template-rows: auto 1fr; overflow: hidden }
-.bar { grid-column: 1 / -1; border-bottom: 1.5px solid #e8735c; padding: 12px 18px; font-size: 14px; font-weight: 600; font-stretch: 108%; color: #b13f28 }
-.timing { border-right: 1.5px solid #f1b8aa; background: repeating-linear-gradient(to bottom, transparent 0 18px, #1d1c1a 18px 23px) 7px 0 / 11px 100% no-repeat }
-.q { padding: 26px 30px; font-family: Geist, sans-serif; letter-spacing: -0.01em; color: oklch(0.22 0.004 60) }
-.meta { display: flex; justify-content: space-between; color: oklch(0.55 0.004 70); font-size: 15px }
-.line { height: 1px; background: oklch(0.9 0.003 80); margin: 10px 0 22px }
-.line i { display: block; width: 25%; height: 1px; background: oklch(0.22 0.004 60) }
-h2 { font-weight: 500; font-size: 22px; letter-spacing: -0.02em; margin-bottom: 16px }
-.o { display: flex; align-items: center; gap: 12px; border: 1px solid oklch(0.9 0.003 80); border-radius: 10px; padding: 11px 14px; margin-bottom: 8px; font-size: 16px; color: oklch(0.45 0.004 70) }
-.o i { width: 20px; height: 20px; border-radius: 50%; border: 1px solid oklch(0.9 0.003 80); display: grid; place-items: center }
-.o.on { border-color: oklch(0.22 0.004 60); background: oklch(0.94 0.004 80); color: oklch(0.22 0.004 60); font-weight: 500 }
-.o.on i { background: oklch(0.22 0.004 60); border-color: oklch(0.22 0.004 60) }
-.o.on i::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: oklch(0.985 0.002 90) }
-.title { color: oklch(0.55 0.004 70); font-size: 15px; margin-bottom: 22px }
-</style>
-</head>
-<body>
-<div>
-  <img class="word" src="../logo/survay.svg" alt="">
-  <h1>One survey, one question at a time.</h1>
-</div>
-<div class="sheet">
-  <div class="bar">This is the real app. Go ahead, answer it.</div>
-  <div class="timing"></div>
-  <div class="q">
-    <p class="title">A few quick questions</p>
-    <div class="meta"><span>1 / 4</span><span>Required</span></div>
-    <div class="line"><i></i></div>
-    <h2>Are you scared about AI?</h2>
-    <div class="o"><i></i>yep</div>
-    <div class="o"><i></i>nah</div>
-    <div class="o"><i></i>its a fucking computer bro stfu</div>
-    <div class="o on"><i></i>sillycon mafia</div>
-  </div>
-</div>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <title>survay og image</title>
+    <style>
+      @font-face {
+        font-family: Archivo;
+        src: url(../fonts/archivo-var.woff2) format("woff2");
+        font-weight: 100 900;
+        font-stretch: 62% 125%;
+      }
+      @font-face {
+        font-family: Geist;
+        src: url(../fonts/geist-var.woff2) format("woff2");
+        font-weight: 100 900;
+      }
+      * {
+        margin: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1200px;
+        height: 630px;
+        overflow: hidden;
+      }
+      body {
+        background: #f5f3ed;
+        color: #1d1c1a;
+        font-family: Archivo, sans-serif;
+        display: grid;
+        grid-template-columns: 560px 1fr;
+        gap: 56px;
+        padding: 64px 64px 0 72px;
+        position: relative;
+      }
+      .word {
+        width: 500px;
+        margin: 30px 0 0 -6px;
+      }
+      h1 {
+        margin-top: 48px;
+        font-size: 46px;
+        line-height: 1.04;
+        font-weight: 680;
+        font-stretch: 112%;
+        letter-spacing: -0.03em;
+      }
+      .sheet {
+        background: oklch(0.992 0.002 90);
+        border: 1.5px solid #e8735c;
+        border-radius: 6px;
+        height: 640px;
+        display: grid;
+        grid-template-columns: 26px 1fr;
+        grid-template-rows: auto 1fr;
+        overflow: hidden;
+      }
+      .bar {
+        grid-column: 1 / -1;
+        border-bottom: 1.5px solid #e8735c;
+        padding: 12px 18px;
+        font-size: 14px;
+        font-weight: 600;
+        font-stretch: 108%;
+        color: #b13f28;
+      }
+      .timing {
+        border-right: 1.5px solid #f1b8aa;
+        background: repeating-linear-gradient(to bottom, transparent 0 18px, #1d1c1a 18px 23px) 7px 0 / 11px
+          100% no-repeat;
+      }
+      .q {
+        padding: 26px 30px;
+        font-family: Geist, sans-serif;
+        letter-spacing: -0.01em;
+        color: oklch(0.22 0.004 60);
+      }
+      .meta {
+        display: flex;
+        justify-content: space-between;
+        color: oklch(0.55 0.004 70);
+        font-size: 15px;
+      }
+      .line {
+        height: 1px;
+        background: oklch(0.9 0.003 80);
+        margin: 10px 0 22px;
+      }
+      .line i {
+        display: block;
+        width: 25%;
+        height: 1px;
+        background: oklch(0.22 0.004 60);
+      }
+      h2 {
+        font-weight: 500;
+        font-size: 22px;
+        letter-spacing: -0.02em;
+        margin-bottom: 16px;
+      }
+      .o {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border: 1px solid oklch(0.9 0.003 80);
+        border-radius: 10px;
+        padding: 11px 14px;
+        margin-bottom: 8px;
+        font-size: 16px;
+        color: oklch(0.45 0.004 70);
+      }
+      .o i {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        border: 1px solid oklch(0.9 0.003 80);
+        display: grid;
+        place-items: center;
+      }
+      .o.on {
+        border-color: oklch(0.22 0.004 60);
+        background: oklch(0.94 0.004 80);
+        color: oklch(0.22 0.004 60);
+        font-weight: 500;
+      }
+      .o.on i {
+        background: oklch(0.22 0.004 60);
+        border-color: oklch(0.22 0.004 60);
+      }
+      .o.on i::after {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: oklch(0.985 0.002 90);
+      }
+      .title {
+        color: oklch(0.55 0.004 70);
+        font-size: 15px;
+        margin-bottom: 22px;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <img class="word" src="../logo/survay.svg" alt="" />
+      <h1>One survey, one question at a time.</h1>
+    </div>
+    <div class="sheet">
+      <div class="bar">This is the real app. Go ahead, answer it.</div>
+      <div class="timing"></div>
+      <div class="q">
+        <p class="title">A few quick questions</p>
+        <div class="meta"><span>1 / 4</span><span>Required</span></div>
+        <div class="line"><i></i></div>
+        <h2>Are you scared about AI?</h2>
+        <div class="o"><i></i>yep</div>
+        <div class="o"><i></i>nah</div>
+        <div class="o"><i></i>its a fucking computer bro stfu</div>
+        <div class="o on"><i></i>sillycon mafia</div>
+      </div>
+    </div>
+  </body>
 </html>

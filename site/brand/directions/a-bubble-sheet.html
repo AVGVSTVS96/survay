@@ -1,61 +1,244 @@
 <!doctype html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>survay · direction a · bubble sheet</title>
-<style>
-@font-face { font-family: Archivo; src: url(../fonts/archivo-var.woff2) format("woff2"); font-weight: 100 900; font-stretch: 62% 125%; }
-:root {
-  --paper: #fbfaf6; --ink: #1d1c1a; --ink-2: #5d5a54; --form: #e8735c; --form-ink: #b9432c; --form-soft: rgb(232 115 92 / .12);
-}
-* { box-sizing: border-box; margin: 0 }
-body { background: var(--paper); color: var(--ink); font: 400 17px/1.5 Archivo, sans-serif; font-stretch: 100%; }
-.page { max-width: 1240px; margin: 0 auto; padding: 0 40px; }
-nav { display: flex; justify-content: space-between; align-items: center; height: 72px; border-bottom: 1px solid var(--form); }
-.word { font-weight: 720; font-stretch: 118%; font-size: 22px; letter-spacing: -.02em; display: flex; align-items: center; }
-.bub { display: inline-grid; place-items: center; width: 1.05em; height: .78em; border-radius: 50%; background: var(--ink); color: var(--paper); font-size: .9em; line-height: 1; margin: 0 .02em; padding-bottom: .06em; }
-nav a { color: var(--ink); text-decoration: none; margin-left: 28px; font-size: 15px }
-.hero { display: grid; grid-template-columns: 1fr 520px; gap: 64px; padding: 72px 0 96px; align-items: start; }
-.big { font-weight: 760; font-stretch: 122%; font-size: 132px; line-height: .9; letter-spacing: -.045em; display: flex; align-items: center; }
-.big .bub { width: 1.02em; height: .74em; font-size: .84em; }
-.lede { font-size: 22px; line-height: 1.35; max-width: 30ch; margin-top: 36px; color: var(--ink-2) }
-.qs { margin-top: 48px; border-top: 1px solid var(--form); }
-.q { display: grid; grid-template-columns: 28px 1fr auto; gap: 16px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--form-soft); font-size: 15px }
-.q .n { color: var(--form-ink); font-variant-numeric: tabular-nums; font-weight: 600 }
-.opts { display: flex; gap: 6px }
-.o { width: 26px; height: 18px; border-radius: 50%; border: 1.25px solid var(--form); display: grid; place-items: center; font-size: 10px; color: var(--form-ink); font-weight: 600 }
-.o.on { background: var(--ink); border-color: var(--ink); color: transparent }
-.cta { display: flex; gap: 12px; margin-top: 40px }
-.btn { height: 48px; padding: 0 22px; border-radius: 10px; display: inline-flex; align-items: center; font-weight: 600; font-size: 16px; text-decoration: none }
-.btn.dark { background: var(--ink); color: var(--paper) }
-.btn.line { border: 1.25px solid var(--ink); color: var(--ink) }
-.sheet { position: relative; border: 1.25px solid var(--form); border-radius: 4px; background: #fff; padding: 0 0 0 28px; }
-.sheet::before { content: ""; position: absolute; left: 9px; top: 24px; bottom: 24px; width: 10px; background: repeating-linear-gradient(to bottom, var(--ink) 0 5px, transparent 5px 22px); }
-.sheet header { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px 12px 4px; border-bottom: 1px solid var(--form); font-size: 12px; color: var(--form-ink); font-weight: 600; font-stretch: 115%; letter-spacing: .04em }
-.zoom { border: 1.25px solid var(--form); border-radius: 999px; padding: 4px 12px; color: var(--form-ink) }
-iframe { width: 100%; height: 600px; border: 0; display: block; background: #fff }
-</style>
-</head>
-<body>
-<div class="page">
-  <nav><span class="word">surv<span class="bub">a</span>y</span><span><a href="#">Demo</a><a href="#">Dashboard</a><a href="#">Self-host</a><a href="#">GitHub</a></span></nav>
-  <section class="hero">
-    <div>
-      <h1 class="big">surv<span class="bub">a</span>y</h1>
-      <p class="lede">A small survey you host yourself. One question at a time, every answer counted.</p>
-      <div class="cta"><a class="btn dark" href="#">Deploy your own</a><a class="btn line" href="#">See the dashboard</a></div>
-      <div class="qs">
-        <div class="q"><span class="n">01</span><span>Are you scared about AI?</span><span class="opts"><i class="o">A</i><i class="o">B</i><i class="o">C</i><i class="o on">D</i></span></div>
-        <div class="q"><span class="n">02</span><span>bruh..</span><span class="opts"><i class="o on">A</i><i class="o">B</i></span></div>
-        <div class="q"><span class="n">04</span><span>Cheeseburgers disappearing from existence?</span><span class="opts"><i class="o on">A</i><i class="o">B</i><i class="o">C</i></span></div>
-      </div>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>survay · direction a · bubble sheet</title>
+    <style>
+      @font-face {
+        font-family: Archivo;
+        src: url(../fonts/archivo-var.woff2) format("woff2");
+        font-weight: 100 900;
+        font-stretch: 62% 125%;
+      }
+      :root {
+        --paper: #fbfaf6;
+        --ink: #1d1c1a;
+        --ink-2: #5d5a54;
+        --form: #e8735c;
+        --form-ink: #b9432c;
+        --form-soft: rgb(232 115 92 / 0.12);
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+      }
+      body {
+        background: var(--paper);
+        color: var(--ink);
+        font:
+          400 17px/1.5 Archivo,
+          sans-serif;
+        font-stretch: 100%;
+      }
+      .page {
+        max-width: 1240px;
+        margin: 0 auto;
+        padding: 0 40px;
+      }
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 72px;
+        border-bottom: 1px solid var(--form);
+      }
+      .word {
+        font-weight: 720;
+        font-stretch: 118%;
+        font-size: 22px;
+        letter-spacing: -0.02em;
+        display: flex;
+        align-items: center;
+      }
+      .bub {
+        display: inline-grid;
+        place-items: center;
+        width: 1.05em;
+        height: 0.78em;
+        border-radius: 50%;
+        background: var(--ink);
+        color: var(--paper);
+        font-size: 0.9em;
+        line-height: 1;
+        margin: 0 0.02em;
+        padding-bottom: 0.06em;
+      }
+      nav a {
+        color: var(--ink);
+        text-decoration: none;
+        margin-left: 28px;
+        font-size: 15px;
+      }
+      .hero {
+        display: grid;
+        grid-template-columns: 1fr 520px;
+        gap: 64px;
+        padding: 72px 0 96px;
+        align-items: start;
+      }
+      .big {
+        font-weight: 760;
+        font-stretch: 122%;
+        font-size: 132px;
+        line-height: 0.9;
+        letter-spacing: -0.045em;
+        display: flex;
+        align-items: center;
+      }
+      .big .bub {
+        width: 1.02em;
+        height: 0.74em;
+        font-size: 0.84em;
+      }
+      .lede {
+        font-size: 22px;
+        line-height: 1.35;
+        max-width: 30ch;
+        margin-top: 36px;
+        color: var(--ink-2);
+      }
+      .qs {
+        margin-top: 48px;
+        border-top: 1px solid var(--form);
+      }
+      .q {
+        display: grid;
+        grid-template-columns: 28px 1fr auto;
+        gap: 16px;
+        align-items: center;
+        padding: 14px 0;
+        border-bottom: 1px solid var(--form-soft);
+        font-size: 15px;
+      }
+      .q .n {
+        color: var(--form-ink);
+        font-variant-numeric: tabular-nums;
+        font-weight: 600;
+      }
+      .opts {
+        display: flex;
+        gap: 6px;
+      }
+      .o {
+        width: 26px;
+        height: 18px;
+        border-radius: 50%;
+        border: 1.25px solid var(--form);
+        display: grid;
+        place-items: center;
+        font-size: 10px;
+        color: var(--form-ink);
+        font-weight: 600;
+      }
+      .o.on {
+        background: var(--ink);
+        border-color: var(--ink);
+        color: transparent;
+      }
+      .cta {
+        display: flex;
+        gap: 12px;
+        margin-top: 40px;
+      }
+      .btn {
+        height: 48px;
+        padding: 0 22px;
+        border-radius: 10px;
+        display: inline-flex;
+        align-items: center;
+        font-weight: 600;
+        font-size: 16px;
+        text-decoration: none;
+      }
+      .btn.dark {
+        background: var(--ink);
+        color: var(--paper);
+      }
+      .btn.line {
+        border: 1.25px solid var(--ink);
+        color: var(--ink);
+      }
+      .sheet {
+        position: relative;
+        border: 1.25px solid var(--form);
+        border-radius: 4px;
+        background: #fff;
+        padding: 0 0 0 28px;
+      }
+      .sheet::before {
+        content: "";
+        position: absolute;
+        left: 9px;
+        top: 24px;
+        bottom: 24px;
+        width: 10px;
+        background: repeating-linear-gradient(to bottom, var(--ink) 0 5px, transparent 5px 22px);
+      }
+      .sheet header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 16px 12px 4px;
+        border-bottom: 1px solid var(--form);
+        font-size: 12px;
+        color: var(--form-ink);
+        font-weight: 600;
+        font-stretch: 115%;
+        letter-spacing: 0.04em;
+      }
+      .zoom {
+        border: 1.25px solid var(--form);
+        border-radius: 999px;
+        padding: 4px 12px;
+        color: var(--form-ink);
+      }
+      iframe {
+        width: 100%;
+        height: 600px;
+        border: 0;
+        display: block;
+        background: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <nav>
+        <span class="word">surv<span class="bub">a</span>y</span
+        ><span
+          ><a href="#">Demo</a><a href="#">Dashboard</a><a href="#">Self-host</a><a href="#">GitHub</a></span
+        >
+      </nav>
+      <section class="hero">
+        <div>
+          <h1 class="big">surv<span class="bub">a</span>y</h1>
+          <p class="lede">A small survey you host yourself. One question at a time, every answer counted.</p>
+          <div class="cta">
+            <a class="btn dark" href="#">Deploy your own</a><a class="btn line" href="#">See the dashboard</a>
+          </div>
+          <div class="qs">
+            <div class="q">
+              <span class="n">01</span><span>Are you scared about AI?</span
+              ><span class="opts"
+                ><i class="o">A</i><i class="o">B</i><i class="o">C</i><i class="o on">D</i></span
+              >
+            </div>
+            <div class="q">
+              <span class="n">02</span><span>bruh..</span
+              ><span class="opts"><i class="o on">A</i><i class="o">B</i></span>
+            </div>
+            <div class="q">
+              <span class="n">04</span><span>Cheeseburgers disappearing from existence?</span
+              ><span class="opts"><i class="o on">A</i><i class="o">B</i><i class="o">C</i></span>
+            </div>
+          </div>
+        </div>
+        <div class="sheet">
+          <header><span>FORM 1 · 4 QUESTIONS</span><span class="zoom">Zoom in ↗</span></header>
+          <iframe src="https://survey-platform-taupe.vercel.app/?embed=1" title="survay demo"></iframe>
+        </div>
+      </section>
     </div>
-    <div class="sheet">
-      <header><span>FORM 1 · 4 QUESTIONS</span><span class="zoom">Zoom in ↗</span></header>
-      <iframe src="https://survey-platform-taupe.vercel.app/?embed=1" title="survay demo"></iframe>
-    </div>
-  </section>
-</div>
-</body>
+  </body>
 </html>

@@ -32,8 +32,8 @@ pnpm dev                     # survey at /, dashboard at /admin
 
 ## Options
 
-| Env | What it does |
-| --- | --- |
+| Env                | What it does                                                                               |
+| ------------------ | ------------------------------------------------------------------------------------------ |
 | `PUBLIC_RESULTS=1` | Shows everyone the results on `/results` and after they submit. Text answers stay private. |
 
 Add `?embed=1` to `/` or `/results` to drop the page padding and post the page height to the parent window as `{ type: "survay:height", height }`, for showing it in an iframe.

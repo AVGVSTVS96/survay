@@ -1,45 +1,32 @@
 {
   "name": "survay",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
+  "description": "A small survey you run yourself: one Bun process, one SQLite file, one question at a time.",
+  "license": "MIT",
+  "bin": {
+    "survay": "src/cli.ts"
+  },
   "type": "module",
   "scripts": {
-    "dev": "next dev",
-    "build": "drizzle-kit migrate && node scripts/seed.ts && next build",
-    "start": "next start",
-    "typecheck": "tsc --noEmit",
-    "lint": "eslint .",
-    "test": "vitest run",
-    "db:seed": "node scripts/seed.ts",
-    "db:migrate": "drizzle-kit migrate",
-    "db:generate": "drizzle-kit generate"
+    "survay": "bun src/cli.ts",
+    "dev": "bun --watch src/cli.ts serve",
+    "check": "tsc -p . && oxlint --type-aware && oxfmt --check && bun test",
+    "fix": "oxlint --type-aware --fix && oxfmt"
   },
   "dependencies": {
-    "@base-ui/react": "^1.5.0",
-    "@vercel/functions": "^3.9.11",
-    "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1",
-    "drizzle-orm": "^0.45.2",
-    "next": "16.3.3",
-    "pg": "^8.23.0",
-    "react": "^19",
-    "react-dom": "^19",
-    "tailwind-merge": "^3.3.1"
+    "bun-plugin-tailwind": "0.1.2",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "tailwindcss": "4.3.3"
   },
   "devDependencies": {
-    "@next/env": "^16.4.0",
-    "@tailwindcss/postcss": "^4.3.3",
-    "@types/node": "^24",
-    "@types/pg": "^8.23.1",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "drizzle-kit": "^0.31.11",
-    "eslint": "^10.12.0",
-    "eslint-config-next": "^16.4.0",
-    "postcss": "^8.5",
-    "shadcn": "^4.21.4",
-    "tailwindcss": "^4.3.3",
-    "typescript": "5.7.3",
-    "vitest": "^5.0.3"
+    "@types/bun": "1.4.2",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "oxfmt": "0.72.0",
+    "oxlint": "1.87.0",
+    "oxlint-tsgolint": "7.0.2003",
+    "typescript": "7.0.2"
   }
 }

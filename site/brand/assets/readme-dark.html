@@ -1,12 +1,91 @@
-<!doctype html><html><head><meta charset="utf-8"><style>
-@font-face { font-family: Archivo; src: url(../fonts/archivo-var.woff2) format("woff2"); font-weight: 100 900; font-stretch: 62% 125% }
-* { margin: 0 } html, body { width: 838px; height: 220px; overflow: hidden }
-body { position: relative; background: #0f0e0d; color: #a5a29b; font: 400 17px/1.4 Archivo, sans-serif; display: flex; flex-direction: column; justify-content: center; padding: 0 44px; border-top: 2px solid #f08a73; border-bottom: 2px solid #f08a73; box-sizing: border-box }
-img { width: 300px; margin-left: -3px }
-p { margin-top: 18px; font-size: 19px }
-.sheet { position: absolute; right: 44px; top: 50%; transform: translateY(-50%); display: grid; gap: 14px }
-.r { display: flex; align-items: center; gap: 10px }
-.r b { width: 30px; color: #f49c86; font-weight: 600; font-size: 15px; font-variant-numeric: tabular-nums }
-.r i { width: 34px; height: 24px; border-radius: 50%; border: 1.5px solid #f08a73; display: grid; place-items: center; font: normal 600 12px Archivo; font-stretch: 115%; color: #f49c86 }
-.r i.on { background: #edebe6; border-color: #edebe6; color: #0f0e0d }
-</style></head><body><img src="../logo/survay-dark.svg" alt=""><p>One survey, one question at a time.</p><div class="sheet"><div class="r"><b>01</b><i>A</i><i>B</i><i>C</i><i class="on">D</i></div><div class="r"><b>02</b><i class="on">A</i><i>B</i><i>C</i><i>D</i></div><div class="r"><b>03</b><i>A</i><i class="on">B</i><i>C</i><i>D</i></div></div></body></html>
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      @font-face {
+        font-family: Archivo;
+        src: url(../fonts/archivo-var.woff2) format("woff2");
+        font-weight: 100 900;
+        font-stretch: 62% 125%;
+      }
+      * {
+        margin: 0;
+      }
+      html,
+      body {
+        width: 838px;
+        height: 220px;
+        overflow: hidden;
+      }
+      body {
+        position: relative;
+        background: #0f0e0d;
+        color: #a5a29b;
+        font:
+          400 17px/1.4 Archivo,
+          sans-serif;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0 44px;
+        border-top: 2px solid #f08a73;
+        border-bottom: 2px solid #f08a73;
+        box-sizing: border-box;
+      }
+      img {
+        width: 300px;
+        margin-left: -3px;
+      }
+      p {
+        margin-top: 18px;
+        font-size: 19px;
+      }
+      .sheet {
+        position: absolute;
+        right: 44px;
+        top: 50%;
+        transform: translateY(-50%);
+        display: grid;
+        gap: 14px;
+      }
+      .r {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .r b {
+        width: 30px;
+        color: #f49c86;
+        font-weight: 600;
+        font-size: 15px;
+        font-variant-numeric: tabular-nums;
+      }
+      .r i {
+        width: 34px;
+        height: 24px;
+        border-radius: 50%;
+        border: 1.5px solid #f08a73;
+        display: grid;
+        place-items: center;
+        font: normal 600 12px Archivo;
+        font-stretch: 115%;
+        color: #f49c86;
+      }
+      .r i.on {
+        background: #edebe6;
+        border-color: #edebe6;
+        color: #0f0e0d;
+      }
+    </style>
+  </head>
+  <body>
+    <img src="../logo/survay-dark.svg" alt="" />
+    <p>One survey, one question at a time.</p>
+    <div class="sheet">
+      <div class="r"><b>01</b><i>A</i><i>B</i><i>C</i><i class="on">D</i></div>
+      <div class="r"><b>02</b><i class="on">A</i><i>B</i><i>C</i><i>D</i></div>
+      <div class="r"><b>03</b><i>A</i><i class="on">B</i><i>C</i><i>D</i></div>
+    </div>
+  </body>
+</html>
