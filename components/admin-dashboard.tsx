@@ -83,7 +83,7 @@ export function AdminDashboard({
                 key={q.id}
                 question={q}
                 stat={stats.find((s) => s.question.id === q.id)}
-                onClose={() => setEditingId(null)}
+                onClose={() => setEditingId((id) => (id === q.id ? null : id))}
               />
             ) : (
               <div
