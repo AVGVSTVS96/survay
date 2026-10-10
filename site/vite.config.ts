@@ -18,6 +18,7 @@ function inlineLogos(): Plugin {
 export default defineConfig({
   plugins: [inlineLogos()],
   build: { target: "es2022" },
+  css: { postcss: {} },
   fmt: { semi: false, ignorePatterns: ["*.html"] },
   lint: {
     jsPlugins: [{ name: "vite-plus", specifier: "vite-plus/oxlint-plugin" }],
