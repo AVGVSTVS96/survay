@@ -31,7 +31,7 @@ figcaption { font-size: 14px; color: var(--ink-3) }
 .row i { width: 34px; height: 24px; border-radius: 50%; border: 1.5px solid var(--form); display: grid; place-items: center; font: normal 600 12px Archivo; font-stretch: 115%; color: var(--form-ink) }
 .row i.on { background: var(--ink); border-color: var(--ink); color: var(--paper) }
 .rows { display: grid; gap: 12px }
-.timing { width: 26px; height: 220px; border-right: 1.5px solid var(--form-line); background: repeating-linear-gradient(to bottom, transparent 0 18px, var(--ink) 18px 23px) 7px 0 / 11px 100% no-repeat }
+.timing { width: 26px; height: 220px; border-right: 1.5px solid var(--form-line); background: linear-gradient(var(--ink) 0 5px, transparent 5px) 7px 0 / 11px 23px no-repeat round content-box; padding-block: 16px }
 .shots { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px }
 .shots img { width: 100%; border: 1px solid var(--form-line); border-radius: 6px; display: block }
 @media (max-width: 720px) { section { grid-template-columns: minmax(0, 1fr) } }

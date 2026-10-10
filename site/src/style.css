@@ -82,7 +82,9 @@ code { font: 500 0.92em/1 ui-monospace, "SF Mono", Menlo, monospace; padding: 2p
 h1, h2 { font-stretch: 112%; font-weight: 680; letter-spacing: -0.03em; line-height: 1.04; text-wrap: balance }
 h2 { font-size: clamp(30px, 4.4vw, 52px) }
 
-.nav { display: flex; align-items: center; justify-content: space-between; gap: 24px; height: 72px; border-bottom: 1px solid var(--form) }
+.nav { display: flex; align-items: center; justify-content: space-between; gap: 24px; height: 72px }
+.nav, .results, .editor-section, .selfhost, .foot { border-image: conic-gradient(var(--form) 0 0) 1 / 0 0 1.5px / 0 100vw }
+.results, .editor-section, .selfhost, .foot { border-image-width: 1.5px 0 0 }
 .nav-word svg { height: 24px; width: auto }
 .nav nav { display: flex; gap: 28px; font-size: 15px }
 .nav nav a { text-decoration: none; color: var(--ink-2); transition: color 0.15s }
@@ -109,7 +111,7 @@ h2 { font-size: clamp(30px, 4.4vw, 52px) }
 .zoom svg { width: 10px; height: 10px; fill: none; stroke: currentColor; stroke-width: 1.6; transition: transform 0.3s var(--ease) }
 .zoom-out { display: none }
 .sheet-body { display: grid; grid-template-columns: 26px minmax(0, 1fr); flex: 1; min-height: 0 }
-.timing { border-right: 1.5px solid var(--form-line); background: repeating-linear-gradient(to bottom, transparent 0 18px, var(--ink) 18px 23px) 7px 0 / 11px 100% no-repeat }
+.timing { border-right: 1.5px solid var(--form-line); padding-block: 16px; background: linear-gradient(var(--ink) 0 5px, transparent 5px) 7px 0 / 11px 23px no-repeat round content-box }
 .frame { padding: 28px clamp(20px, 3vw, 36px) 32px; min-height: 0; overflow: auto }
 .frame iframe { width: 100%; height: 480px; border: 0; color-scheme: normal; transition: height 0.25s var(--ease) }
 
@@ -121,14 +123,14 @@ h2 { font-size: clamp(30px, 4.4vw, 52px) }
 .sheet.zoomed .zoom svg { transform: rotate(180deg) }
 body.locked { overflow: hidden }
 
-.results { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(40px, 6vw, 96px); padding-block: clamp(72px, 9vw, 128px); border-top: 1px solid var(--form) }
+.results { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(40px, 6vw, 96px); padding-block: clamp(72px, 9vw, 128px) }
 .results-copy { position: sticky; top: 32px; align-self: start }
 .results-copy p, .section-head p, .selfhost-body > p { margin-top: 16px; font-size: 18px; color: var(--ink-2); max-width: 34ch; text-wrap: pretty }
 .arrow-link { display: inline-flex; gap: 6px; margin-top: 28px; font-weight: 600; text-decoration: none; border-bottom: 1.5px solid var(--form); padding-bottom: 2px }
 .arrow-link:hover { color: var(--form-ink) }
 
-.window { border: 1px solid var(--hair); border-radius: 12px; background: var(--app-bg); overflow: hidden }
-.window-bar { display: flex; align-items: center; gap: 14px; height: 42px; padding: 0 16px; border-bottom: 1px solid var(--hair); font-size: 13px; color: var(--ink-3) }
+.window { border: 1.5px solid var(--form); border-radius: 6px; background: var(--app-bg); overflow: hidden }
+.window-bar { display: flex; align-items: center; gap: 14px; height: 44px; padding: 0 18px; border-bottom: 1.5px solid var(--form); font-size: 13px; color: var(--ink-3) }
 .dots { display: flex; gap: 6px; flex: none }
 .dots i { width: 10px; height: 10px; border-radius: 50%; border: 1.25px solid var(--form) }
 .dots i:first-child { background: var(--form) }
@@ -138,10 +140,8 @@ body.locked { overflow: hidden }
 .window-body iframe { width: 100%; height: 640px; border: 0 }
 .results figcaption { padding: 0 clamp(20px, 4vw, 48px) 20px; font-size: 14px; color: var(--ink-3) }
 
-.editor-section { background: var(--sheet); border-block: 1px solid var(--form); padding-block: clamp(72px, 9vw, 128px) }
-.section-head { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 24px 64px; align-items: end; margin-bottom: clamp(32px, 4vw, 56px) }
-.section-head p { margin: 0 0 6px }
-.app-mock { box-shadow: 0 1px 0 var(--hair) }
+.editor-section { padding-block: clamp(72px, 9vw, 128px) }
+.section-head { margin-bottom: clamp(32px, 4vw, 56px) }
 
 .app { font-family: Geist, ui-sans-serif, system-ui, sans-serif; font-size: 15px; line-height: 1.55; letter-spacing: -0.01em; color: var(--app-fg); background: var(--app-bg); display: flex; flex-direction: column; gap: 32px; max-width: 712px; margin-inline: auto; padding: clamp(28px, 4vw, 56px) clamp(20px, 4vw, 40px) clamp(36px, 5vw, 64px) }
 .app-head { display: flex; justify-content: space-between; align-items: flex-start }
@@ -187,13 +187,13 @@ body.locked { overflow: hidden }
 .selfhost { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: 40px clamp(40px, 6vw, 96px); padding-block: clamp(72px, 9vw, 128px) }
 .selfhost h2 { font-size: clamp(34px, 5.4vw, 68px); line-height: 1 }
 .selfhost-body > p { margin-top: 0 }
-.steps { list-style: none; margin-top: 36px; border-top: 1px solid var(--form) }
+.steps { list-style: none; margin-top: 36px; border-top: 1.5px solid var(--form) }
 .steps li { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 16px; align-items: start; padding: 22px 0; border-bottom: 1px solid var(--form-line); font-size: 18px }
 .num { display: grid; place-items: center; width: 40px; height: 29px; border-radius: 50%; background: var(--ink); color: var(--paper); font-weight: 700; font-stretch: 115%; font-size: 15px; margin-top: -1px }
 .deploy { display: inline-block; margin-top: 16px; transition: transform 0.15s var(--ease) }
 .deploy:active { transform: scale(0.97) }
 
-.foot { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding-block: 40px 56px; border-top: 1px solid var(--form); color: var(--ink-2); font-size: 15px }
+.foot { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding-block: 40px 56px; color: var(--ink-2); font-size: 15px }
 .foot-word svg { height: 20px; width: auto }
 
 @media (max-width: 1100px) {
@@ -204,7 +204,6 @@ body.locked { overflow: hidden }
   .hero-word svg { max-width: 520px }
   .sheet-slot { min-height: 0 }
   .results-copy { position: static }
-  .section-head { grid-template-columns: minmax(0, 1fr) }
 }
 @media (max-width: 640px) {
   .nav nav a:not(:last-child) { display: none }

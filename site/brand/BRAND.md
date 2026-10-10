@@ -47,8 +47,8 @@ Rule: **salmon is the form, graphite is the answer.** Anything you can mark or p
 
 ### Grid and spacing
 
-- Page max 1240px, gutters `clamp(16px, 4vw, 40px)`. Sections split by 1px `--form` rules, not background changes, except the dashboard band, which sits on `--sheet` like a page torn out of the form.
-- Radii: 6px on the sheet (paper), 10px on buttons, 12px on browser windows, the app's own radii inside the app.
+- Page max 1240px, gutters `clamp(16px, 4vw, 40px)`. Sections split by full-bleed 1.5px `--form` rules, never by background changes.
+- Every frame holding the app is a sheet: 1.5px `--form` border, 6px radius, `--sheet` fill, a salmon bar on top. 10px on buttons, the app's own radii inside the app.
 - No shadows. 1.5px `--form` borders on anything that is "the form".
 
 ### Motifs
@@ -56,7 +56,7 @@ Rule: **salmon is the form, graphite is the answer.** Anything you can mark or p
 1. **The filled bubble.** The `a` in survay is a pencil-filled answer bubble. It is the mark, the favicon and the step numbers in the self-host list.
 2. **The timing track.** The column of black dashes down an answer sheet's edge, which scanners read to find each row. It runs down the hero sheet and the OG image.
 3. **The answer row.** `01  (A) (B) (C) (●)` in the README header: question number in `--form-ink`, empty bubbles in salmon, the chosen one in ink.
-4. **The sheet.** The live app always sits on a salmon-bordered sheet or in a plain browser window, never on a device mockup.
+4. **The sheet.** The live app and the rebuilt dashboard always sit on a salmon-bordered sheet, never on a device mockup or browser chrome.
 
 ### Motion
 
