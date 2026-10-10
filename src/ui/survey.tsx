@@ -89,18 +89,22 @@ export function SurveyForm({ survey, search, embed }: { survey: Survey; search: 
     );
   }
 
+  const shown = params.get("results") === "0" ? null : results;
+
   if (status === "done") {
     return (
       <div className="enter flex flex-col gap-10">
         <div className="flex flex-col gap-3">
           <p className="text-lg-display text-em text-balance">Thank you</p>
           <p className="text-muted-foreground text-pretty">
-            {results
+            {shown
               ? "Here's how everyone answered so far."
-              : "Your response has been recorded. You can close this page."}
+              : embed
+                ? "Your answers are in."
+                : "Your response has been recorded. You can close this page."}
           </p>
         </div>
-        {results && <ResultsView stats={results} mine={mine} />}
+        {shown && <ResultsView stats={shown} mine={mine} />}
       </div>
     );
   }
@@ -411,7 +415,7 @@ function Choice({
         className={cn(
           "flex h-5 w-5 shrink-0 items-center justify-center border transition-colors duration-150",
           role === "radio" ? "rounded-full" : "rounded",
-          checked ? "border-foreground bg-foreground" : "border-border group-hover:border-foreground/40",
+          checked ? "border-foreground bg-foreground" : "border-subtle group-hover:border-foreground/60",
         )}
       >
         <span

@@ -66,19 +66,17 @@ for (const frame of [survey, results, dashboard]) {
 function paintTiming() {
   const marks = [...timing.children] as HTMLElement[]
   const filled = Math.round(progress * marks.length)
-  marks.forEach((mark, i) => mark.classList.toggle("on", i < filled))
+  const was = marks.filter((mark) => mark.classList.contains("on")).length
+  marks.forEach((mark, i) => {
+    mark.style.setProperty("--i", String(Math.max(0, filled > was ? i - was : was - 1 - i)))
+    mark.classList.toggle("on", i < filled)
+  })
 }
 
 new ResizeObserver(() => {
-  const count = Math.max(0, Math.floor((timing.clientHeight - 32) / 23))
-  if (count === timing.children.length) return
-  timing.replaceChildren(
-    ...Array.from({ length: count }, (_, i) => {
-      const mark = document.createElement("i")
-      mark.style.setProperty("--i", String(i))
-      return mark
-    }),
-  )
+  const count = Math.max(0, Math.floor((timing.clientHeight - 14) / 23))
+  while (timing.children.length < count) timing.append(document.createElement("i"))
+  while (timing.children.length > count) timing.lastElementChild!.remove()
   paintTiming()
 }).observe(timing)
 
@@ -96,9 +94,30 @@ function pulse(element: HTMLElement) {
   element.classList.add("pulse")
 }
 
-const box = (r: DOMRect) => ({ top: `${r.top}px`, left: `${r.left}px`, width: `${r.width}px`, height: `${r.height}px` })
-const full = () => ({ top: "0px", left: "0px", width: `${innerWidth}px`, height: `${innerHeight}px` })
+const frameBox = $(".frame")
+const box = (r: DOMRect) => ({
+  top: `${r.top}px`,
+  left: `${r.left}px`,
+  width: `${r.width}px`,
+  height: `${r.height}px`,
+  borderRadius: "6px",
+  borderWidth: "1.5px",
+})
+const full = () => ({
+  top: "0px",
+  left: "0px",
+  width: `${innerWidth}px`,
+  height: `${innerHeight}px`,
+  borderRadius: "0px",
+  borderWidth: "0px",
+})
 const ease = "cubic-bezier(0.32, 0.72, 0, 1)"
+
+function grow(from: Keyframe, to: Keyframe, duration: number, pads: [string, string]) {
+  const options = { duration, easing: ease }
+  frameBox.animate([{ paddingTop: pads[0] }, { paddingTop: pads[1] }], options)
+  return sheet.animate([from, to], options).finished
+}
 
 function setZoomed(on: boolean) {
   zoom.setAttribute("aria-expanded", String(on))
@@ -108,17 +127,24 @@ function setZoomed(on: boolean) {
 
 async function open() {
   const from = sheet.getBoundingClientRect()
+  const pad = getComputedStyle(frameBox).paddingTop
   slot.style.height = `${from.height}px`
   sheet.classList.add("zoomed")
   setZoomed(true)
   survey.focus()
-  if (motion()) await sheet.animate([box(from), full()], { duration: 420, easing: ease }).finished
+  if (motion()) await grow(box(from), full(), 420, [pad, getComputedStyle(frameBox).paddingTop])
 }
 
 async function close() {
-  const to = slot.getBoundingClientRect()
+  const pad = getComputedStyle(frameBox).paddingTop
+  sheet.classList.remove("zoomed")
+  slot.style.height = ""
+  const to = sheet.getBoundingClientRect()
+  const rest = getComputedStyle(frameBox).paddingTop
+  slot.style.height = `${to.height}px`
+  sheet.classList.add("zoomed")
   setZoomed(false)
-  if (motion()) await sheet.animate([full(), box(to)], { duration: 320, easing: ease }).finished
+  if (motion()) await grow(full(), box(to), 320, [pad, rest])
   sheet.classList.remove("zoomed")
   slot.style.height = ""
   zoom.focus({ preventScroll: true })
@@ -165,3 +191,8 @@ const sections = new IntersectionObserver(
   { rootMargin: "-45% 0px -50% 0px" },
 )
 for (const id of links.keys()) sections.observe(document.getElementById(id)!)
+
+const header = $("#top")
+new IntersectionObserver(([entry]) => header.classList.toggle("named", !entry!.isIntersecting), {
+  rootMargin: "-72px 0px 0px 0px",
+}).observe($(".hero-word"))

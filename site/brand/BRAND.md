@@ -22,7 +22,7 @@
 
 One family with a width axis, so the wordmark and the prose share bones.
 
-- **Display:** Archivo at `font-stretch: 112%`, weight 680, letter-spacing `-0.03em`, line-height 1.04. Headlines `clamp(30px, 4.4vw, 52px)`; the "Own it" headline goes to 68px.
+- **Display:** Archivo at `font-stretch: 112%`, weight 680, letter-spacing `-0.03em`, line-height 1.04. The hero line `clamp(30px, 3.9vw, 48px)` outranks section headlines `clamp(28px, 3.4vw, 42px)`; the "Own it" closer goes to 60px.
 - **Wordmark:** Archivo 760 at width 122, tracked `-0.035em`, drawn as outlines by `logo/gen.mjs` from a static instance (`logo/ttf/Archivo-760-122.ttf`).
 - **Body:** Archivo 400 at width 100, 17px/1.5; ledes 18 to 20px in `--ink-2`.
 - **The app's own type:** anything that is the app (the OG images' form) uses **Geist**, like the real app. The brand never restyles the product.
@@ -34,7 +34,7 @@ Answer sheets print the form in a "dropout" ink the scanner ignores, so only you
 
 | token         | light                   | dark                   | use                                                                    |
 | ------------- | ----------------------- | ---------------------- | ---------------------------------------------------------------------- |
-| `--paper`     | `#f5f3ed`               | `#0f0e0d`              | the page: a step below the app's own background                        |
+| `--paper`     | `#f5f3ed`               | `#0a0908`              | the page: a step below the app's own background                        |
 | `--sheet`     | `oklch(0.992 0.002 90)` | `oklch(0.17 0.004 70)` | the app's `--background`, exactly; anything holding the app sits on it |
 | `--ink`       | `#1d1c1a`               | `#edebe6`              | text, filled bubbles, primary buttons                                  |
 | `--ink-2`     | `#5d5a54`               | `#a5a29b`              | ledes, secondary text                                                  |
@@ -48,6 +48,7 @@ Rule: **salmon is the form, graphite is the answer.** Anything you can mark or p
 ### Grid and spacing
 
 - Page max 1240px, gutters `clamp(16px, 4vw, 40px)`. Sections split by full-bleed 1.5px `--form` rules, never by background changes.
+- The nav sticks to the top on paper. Its wordmark stays hidden while the hero's is on screen, then rises in, so the page never shows two logos.
 - Every frame holding the app is a sheet: 1.5px `--form` border, 6px radius, `--sheet` fill, a salmon bar on top. 10px on buttons, the app's own radii inside the app.
 - No shadows. 1.5px `--form` borders on anything that is "the form".
 

@@ -65,7 +65,7 @@ Put these in `.env` (the deploy script ships it too):
 | `SURVAY_DATA`      | The folder for `survay.db` and `password`, `data/` by default.                                |
 | `DEMO=1`           | Adds `/admin/try`, the dashboard in a sandbox that saves nothing. The survay website uses it. |
 
-Add `?embed=1` to `/` or `/results` to show it in an iframe: the page drops its padding and posts `{ type: "survay:height", height }` to the parent window.
+Add `?embed=1` to `/` or `/results` to show it in an iframe: the page drops its padding and posts `{ type: "survay:height", height }` to the parent window. Add `&results=0` to thank people without showing the results inline.
 
 ## How it works
 

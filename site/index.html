@@ -7,7 +7,7 @@
 <meta name="description" content="One survey, one question at a time. Bun, one SQLite file and a dashboard, on your computer or a Sprite. MIT.">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f5f3ed">
-<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0f0e0d">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0a0908">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta property="og:type" content="website">
@@ -26,14 +26,16 @@
 <script type="module" src="/src/main.ts"></script>
 </head>
 <body>
-<header class="nav wrap">
-  <a class="nav-word" href="/" aria-label="survay"><!--wordmark--></a>
-  <nav aria-label="Sections">
-    <a href="#results">Results</a>
-    <a href="#dashboard">Dashboard</a>
-    <a href="#own">Own it</a>
-    <a href="%repo%">GitHub</a>
-  </nav>
+<header class="top" id="top">
+  <div class="nav wrap">
+    <a class="nav-word" href="/" aria-label="survay"><!--wordmark--></a>
+    <nav aria-label="Sections">
+      <a href="#results">Results</a>
+      <a href="#dashboard">Dashboard</a>
+      <a href="#own">Own it</a>
+      <a href="%repo%">GitHub</a>
+    </nav>
+  </div>
 </header>
 
 <main>
@@ -46,13 +48,14 @@
         <a class="btn solid" href="#own">Run your own</a>
         <a class="btn line" href="%repo%">GitHub</a>
       </div>
+      <p class="facts">%lines%&nbsp;lines of&nbsp;TypeScript · %deps%&nbsp;dependencies · one SQLite&nbsp;file · MIT</p>
     </div>
 
     <div class="sheet-slot">
       <div class="sheet" id="sheet" data-state="loading">
         <div class="sheet-bar">
           <span class="sheet-note ask"><span class="note-lead">This is the real app. </span>Go ahead, answer it.</span>
-          <a class="sheet-note done" href="#results" tabindex="-1">You're in the results below <span aria-hidden="true">↓&#xFE0E;</span></a>
+          <a class="sheet-note done" href="#results">You're in the results below <span aria-hidden="true">↓&#xFE0E;</span></a>
           <button class="zoom" id="zoom" type="button" aria-label="Open the survey full screen" aria-expanded="false">
             <span class="zoom-in">Zoom in</span><span class="zoom-out">Zoom out</span>
             <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9 9 3M4.5 3H9v4.5"/></svg>
@@ -71,7 +74,7 @@
               <span class="opt"><b></b><i class="w50"></i></span>
               <span class="opt"><b></b><i class="w30"></i></span>
             </div>
-            <iframe id="survey" src="%demo%/?embed=1" title="The survay demo survey, running live"></iframe>
+            <iframe id="survey" src="%demo%/?embed=1&amp;results=0" title="The survay demo survey, running live"></iframe>
           </div>
         </div>
       </div>
@@ -84,29 +87,29 @@
       <p>The demo's results are public. Answer the survey above and watch your vote land.</p>
       <a class="arrow-link" href="%demo%/results">Open full results <span aria-hidden="true">↗&#xFE0E;</span></a>
     </div>
-    <figure class="window" data-state="loading">
-      <div class="window-bar">
-        <span class="url">%demo-host%/results</span>
-        <span class="live" id="live"><i></i>Live</span>
-      </div>
-      <div class="window-body">
-        <iframe id="results-frame" src="%demo%/results?embed=1" title="Public results for the demo survey"></iframe>
+    <figure class="shown">
+      <div class="window" data-state="loading">
+        <div class="window-bar">
+          <span class="url">%demo-host%/results</span>
+          <span class="live" id="live"><i></i>Live</span>
+        </div>
+        <div class="window-body">
+          <iframe id="results-frame" src="%demo%/results?embed=1" title="Public results for the demo survey"></iframe>
+        </div>
       </div>
       <figcaption>Text answers stay off the public page.</figcaption>
     </figure>
   </section>
 
-  <section class="editor-section" id="dashboard" aria-labelledby="dashboard-title">
-    <div class="wrap">
-      <div class="section-head">
-        <h2 id="dashboard-title">Write it in the dashboard.</h2>
-        <p>Pick one of four kinds, write the prompt, move it up or down.</p>
-      </div>
-      <figure class="window app-window" data-state="loading">
-        <div class="window-bar"><span class="url">localhost:3000/admin</span><span class="try">Try it. Nothing here is saved.</span></div>
-        <iframe id="dashboard-frame" src="%demo%/admin/try?embed=1" title="The survay dashboard. Edits stay in this tab."></iframe>
-      </figure>
+  <section class="dash wrap" id="dashboard" aria-labelledby="dashboard-title">
+    <div class="dash-copy">
+      <h2 id="dashboard-title">Write your survey in the dashboard.</h2>
+      <p>Multiple choice, checkboxes, a rating or text. Write the prompt, then move it up or down.</p>
     </div>
+    <figure class="window app-window" data-state="loading">
+      <div class="window-bar"><span class="url">%demo-host%/admin/try</span><span class="try">Try it. Nothing here is saved.</span></div>
+      <iframe id="dashboard-frame" src="%demo%/admin/try?embed=1" title="The survay dashboard. Edits stay in this tab."></iframe>
+    </figure>
   </section>
 
   <section class="own wrap" id="own" aria-labelledby="own-title">
@@ -119,8 +122,9 @@
         <span class="num" aria-hidden="true">1</span>
         <div class="step">
           <h3>Make a copy and start it.</h3>
+          <p>You need <a href="https://bun.sh">Bun</a>.</p>
           <div class="term">
-            <p class="cmd"><span>gh repo create my-survay --template AVGVSTVS96/survay --clone</span></p>
+            <p class="cmd"><span>gh repo create my-survay --template AVGVSTVS96/survay --private --clone</span></p>
             <p class="cmd"><span>cd my-survay &amp;&amp; bun install &amp;&amp; bun survay</span></p>
             <pre class="out">survay is running
 
@@ -141,7 +145,10 @@
             <pre class="out">survay is online
 
   survey     https://my-survay-abc12.sprites.app
-  dashboard  https://my-survay-abc12.sprites.app/admin</pre>
+  dashboard  https://my-survay-abc12.sprites.app/admin
+  password   IIFskbOjGJnn8zflfJbf_avo
+
+  from here  sprite exec -s my-survay -- survay results</pre>
           </div>
         </div>
       </li>
@@ -151,7 +158,7 @@
           <h3>Read the answers anywhere.</h3>
           <div class="term">
             <p class="cmd"><span>sprite exec -s my-survay -- survay results</span></p>
-            <pre class="out" id="report" aria-live="polite">Waiting for the demo's results</pre>
+            <pre class="out" id="report">Waiting for the demo's results</pre>
           </div>
         </div>
       </li>

@@ -20,7 +20,7 @@
     "react-dom",
     "tailwindcss"
   ],
-  "linesOfCode": 2148,
+  "linesOfCode": 2167,
   "linesOfCodeRounded": 2200,
   "linesOfCodeNote": "Non-blank lines in 18 .ts/.tsx files under src/, not counting tests. Counted by site/copy/count.mjs.",
   "countedAt": "2026-10-10"

@@ -17,7 +17,9 @@ function inline(): Plugin {
         .replaceAll("%demo%", facts.demo)
         .replaceAll("%demo-host%", new URL(facts.demo).host)
         .replaceAll("%repo%", facts.repo)
-        .replaceAll("%site%", facts.site),
+        .replaceAll("%site%", facts.site)
+        .replaceAll("%lines%", facts.linesOfCodeRounded.toLocaleString("en-US"))
+        .replaceAll("%deps%", String(facts.dependencies.length)),
   }
 }
 

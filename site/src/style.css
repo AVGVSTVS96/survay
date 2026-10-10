@@ -26,7 +26,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --paper: #0f0e0d;
+    --paper: #0a0908;
     --sheet: oklch(0.17 0.004 70);
     --ink: #edebe6;
     --ink-2: #a5a29b;
@@ -46,7 +46,8 @@
 html {
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
-  scroll-padding-top: 24px;
+  scroll-padding-top: 72px;
+  scrollbar-gutter: stable;
 }
 body {
   background: var(--paper);
@@ -89,7 +90,6 @@ code {
 :focus-visible {
   outline: 2px solid var(--form);
   outline-offset: 3px;
-  border-radius: 4px;
 }
 .wrap {
   max-width: 1240px;
@@ -106,7 +106,7 @@ h2 {
   text-wrap: balance;
 }
 h2 {
-  font-size: clamp(30px, 4.4vw, 52px);
+  font-size: clamp(28px, 3.4vw, 42px);
 }
 
 /* nav */
@@ -118,18 +118,35 @@ h2 {
   gap: 24px;
   height: 72px;
 }
-.nav,
-.results,
-.editor-section,
-.own,
-.foot {
-  border-image: conic-gradient(var(--form) 0 0) 1 / 0 0 1.5px / 0 100vw;
+.top {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: var(--paper);
+  border-bottom: 1.5px solid var(--form);
 }
 .results,
-.editor-section,
+.dash,
 .own,
 .foot {
-  border-image-width: 1.5px 0 0;
+  border-image: conic-gradient(var(--form) 0 0) 1 / 1.5px 0 0 / 0 100vw;
+}
+.nav-word {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(4px);
+  transition:
+    opacity 0.2s ease,
+    transform 0.3s var(--ease),
+    visibility 0s 0.3s;
+}
+.top.named .nav-word {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition:
+    opacity 0.2s ease,
+    transform 0.3s var(--ease);
 }
 .nav-word svg {
   height: 24px;
@@ -216,7 +233,7 @@ h2 {
   }
 }
 .hero h1 {
-  font-size: clamp(28px, 3.3vw, 40px);
+  font-size: clamp(30px, 3.9vw, 48px);
   max-width: 16ch;
 }
 .lede {
@@ -232,6 +249,12 @@ h2 {
   flex-wrap: wrap;
   gap: 12px;
   margin-top: 36px;
+}
+.facts {
+  margin-top: 28px;
+  font-size: 14px;
+  color: var(--ink-3);
+  text-wrap: pretty;
 }
 .btn {
   display: inline-flex;
@@ -269,6 +292,7 @@ h2 {
 
 .sheet-slot {
   min-height: 560px;
+  margin-top: 12px;
 }
 .sheet {
   background: var(--sheet);
@@ -305,13 +329,20 @@ a.sheet-note {
 .sheet-note.done,
 .sheet[data-done="true"] .sheet-note.ask {
   opacity: 0;
+  visibility: hidden;
   transform: translateY(6px);
-  pointer-events: none;
+  transition:
+    opacity 0.2s ease,
+    transform 0.3s var(--ease),
+    visibility 0s 0.3s;
 }
 .sheet[data-done="true"] .sheet-note.done {
   opacity: 1;
+  visibility: visible;
   transform: none;
-  pointer-events: auto;
+  transition:
+    opacity 0.2s ease,
+    transform 0.3s var(--ease);
 }
 .zoom {
   display: inline-flex;
@@ -334,7 +365,8 @@ a.sheet-note {
 }
 @media (hover: hover) {
   .zoom:hover {
-    background: var(--form);
+    background: var(--form-ink);
+    border-color: var(--form-ink);
     color: var(--sheet);
   }
 }
@@ -358,6 +390,7 @@ a.sheet-note {
 .timing {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   gap: 18px;
   align-items: center;
   padding-block: 16px;
@@ -504,13 +537,14 @@ body.locked {
   gap: clamp(40px, 6vw, 96px);
   padding-block: clamp(72px, 9vw, 128px);
 }
-.results-copy {
+.results-copy,
+.dash-copy {
   position: sticky;
-  top: 32px;
+  top: 104px;
   align-self: start;
 }
 .results-copy p,
-.section-head p,
+.dash-copy p,
 .own-head p {
   margin-top: 16px;
   font-size: 18px;
@@ -597,29 +631,36 @@ body.locked {
 }
 .window iframe {
   width: 100%;
-  height: 640px;
+  height: 800px;
   border: 0;
   color-scheme: normal;
   transition:
     height 0.25s var(--ease),
     opacity 0.3s ease;
 }
-.results figcaption {
-  padding: 0 clamp(20px, 4vw, 48px) 20px;
+.shown figcaption {
+  margin-top: 14px;
   font-size: 14px;
   color: var(--ink-3);
 }
 
 /* dashboard */
 
-.editor-section {
+.dash {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  grid-template-areas: "window copy";
+  gap: clamp(40px, 6vw, 96px);
   padding-block: clamp(72px, 9vw, 128px);
 }
-.section-head {
-  margin-bottom: clamp(32px, 4vw, 56px);
+.dash-copy {
+  grid-area: copy;
+}
+.app-window {
+  grid-area: window;
 }
 .app-window iframe {
-  height: 900px;
+  height: 860px;
 }
 
 /* own it */
@@ -635,7 +676,7 @@ body.locked {
   margin-bottom: clamp(40px, 5vw, 64px);
 }
 .own h2 {
-  font-size: clamp(34px, 5.4vw, 68px);
+  font-size: clamp(34px, 4.8vw, 60px);
   line-height: 1;
   max-width: 14ch;
 }
@@ -644,7 +685,6 @@ body.locked {
 }
 .steps {
   list-style: none;
-  border-top: 1.5px solid var(--form);
 }
 .steps > li {
   display: grid;
@@ -653,6 +693,10 @@ body.locked {
   align-items: start;
   padding: 26px 0 30px;
   border-bottom: 1px solid var(--form-line);
+}
+.steps > li:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
 }
 @media (min-width: 1100px) {
   .step {
@@ -728,6 +772,8 @@ body.locked {
   user-select: none;
 }
 .copy {
+  position: sticky;
+  right: 10px;
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -735,14 +781,14 @@ body.locked {
   height: 26px;
   padding: 0 9px;
   border-radius: 999px;
+  background: var(--sheet);
   font:
     600 12px/1 Archivo,
     sans-serif;
   font-stretch: 108%;
-  color: var(--form-ink);
-  opacity: 0;
+  color: color-mix(in oklch, var(--form-ink) 62%, var(--sheet));
   transition:
-    opacity 0.15s ease,
+    color 0.15s ease,
     background-color 0.15s ease,
     transform 0.16s var(--ease);
 }
@@ -762,16 +808,11 @@ body.locked {
 .cmd:hover .copy,
 .copy:focus-visible,
 .copy.copied {
-  opacity: 1;
-}
-@media (hover: none) {
-  .copy {
-    opacity: 1;
-  }
+  color: var(--form-ink);
 }
 @media (hover: hover) {
   .copy:hover {
-    background: color-mix(in oklch, var(--form) 14%, transparent);
+    background: color-mix(in oklch, var(--form) 14%, var(--sheet));
   }
 }
 .out {
@@ -826,14 +867,22 @@ body.locked {
   .own {
     grid-template-columns: minmax(0, 1fr);
   }
+  .dash {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "copy" "window";
+  }
   .hero-word svg {
     max-width: 520px;
   }
   .sheet-slot {
     min-height: 0;
   }
-  .results-copy {
+  .results-copy,
+  .dash-copy {
     position: static;
+  }
+  .sheet-slot {
+    margin-top: 0;
   }
   .own-head {
     grid-template-columns: minmax(0, 1fr);
@@ -846,8 +895,19 @@ body.locked {
   .nav-word svg {
     height: 21px;
   }
-  .window-bar .try {
+  .app-window .url {
     display: none;
+  }
+  .hero {
+    padding-top: 28px;
+    gap: 32px;
+  }
+  .hero-word svg {
+    max-width: 280px;
+    margin-bottom: 22px;
+  }
+  .ctas {
+    margin-top: 24px;
   }
   .sheet-note {
     font-size: 12px;

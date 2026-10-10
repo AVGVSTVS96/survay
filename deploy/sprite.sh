@@ -9,7 +9,7 @@ run() { sprite exec -s "$name" -- bash -lc "$1"; }
 
 sprite list | grep -qx "$name" || sprite create "$name" --skip-console >/dev/null
 
-{ git ls-files --cached --others --exclude-standard; if [ -f .env ]; then echo .env; fi; } \
+{ git ls-files --cached --others --exclude-standard -- . ':!site'; if [ -f .env ]; then echo .env; fi; } \
   | tar -czf - -T - \
   | sprite exec -s "$name" -- bash -c 'rm -rf ~/survay.next && mkdir -p ~/survay.next && tar -xzf - -C ~/survay.next'
 

@@ -12,8 +12,10 @@ survay is a small survey app you run yourself: one survey, one question at a tim
 
 A small survey app you run yourself. Every answer lands in one file you own.
 
+- Facts line under the buttons: `{linesOfCodeRounded} lines of TypeScript · {dependencies.length} dependencies · one SQLite file · MIT`
+
 - Frame caption: `This is the real app. Go ahead, answer it.`
-- Frame caption once you've submitted: `You're in the results below.` (links to #results)
+- Frame caption once you've submitted: `You're in the results below.` (links to #results; the embedded survey thanks you with `Your answers are in.` and leaves the results to the section below)
 - Zoom control: `Zoom in` / `Zoom out` (aria-label: `Open the survey full screen` / `Close full screen`)
 
 ## Sections
@@ -29,9 +31,9 @@ The demo's results are public. Answer the survey above and watch your vote land.
 
 ### 2. Dashboard
 
-**Write it in the dashboard.**
+**Write your survey in the dashboard.**
 
-Pick one of four kinds, write the prompt, move it up or down.
+Multiple choice, checkboxes, a rating or text. Write the prompt, then move it up or down.
 
 - Window label: `Try it. Nothing here is saved.`
 
@@ -41,8 +43,8 @@ Pick one of four kinds, write the prompt, move it up or down.
 
 Your copy is a folder on your computer. One file in it, `data/survay.db`, holds every answer.
 
-1. **Make a copy and start it.** (the real `bun survay` output)
-2. **Put it online.** A Sprite sleeps when nobody's answering and wakes on the next visit. Any computer with a disk works too.
+1. **Make a copy and start it.** You need Bun. (the real `bun survay` output)
+2. **Put it online.** A Sprite sleeps when nobody's answering and wakes on the next visit. Any computer with a disk works too. (the real `deploy/sprite.sh` output, in full)
 3. **Read the answers anywhere.** (the real `survay results` output, live from the demo)
 
 ### Footer
