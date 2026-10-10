@@ -4,16 +4,16 @@
 
 ## Personality
 
-- **Small and finished.** One survey per deploy. The page shows the whole thing working instead of listing what it does.
+- **Small and finished.** One survey per copy, one file of answers. The page shows the whole thing working instead of listing what it does.
 - **Plays along with the demo.** The demo questions are silly on purpose ("sillycon mafia"); the brand stays straight-faced next to them, which is the joke.
-- **Shows the real app.** The hero is the live survey and the results are the live results page, both in iframes. The dashboard is rebuilt from the app's own components and tokens, because it sits behind a password.
+- **Shows the real app.** The hero is the live survey, the results are the live results page, and the dashboard is the real one in its sandbox (`/admin/try`, nothing saved), all in iframes. The terminal prints the demo's real results through the CLI's own `report()`.
 
 ## What it is and isn't
 
 | it is                                          | it isn't                                    |
 | ---------------------------------------------- | ------------------------------------------- |
 | a form you fill in, one bubble at a time       | a survey platform with workspaces and seats |
-| one survey on your own Vercel and Neon         | a hosted service, a waitlist                |
+| one survey on your computer, one SQLite file   | a hosted service, a waitlist                |
 | a bubble sheet: printed salmon, graphite marks | a Typeform clone with gradients and emoji   |
 
 ## The visual system
@@ -22,11 +22,11 @@
 
 One family with a width axis, so the wordmark and the prose share bones.
 
-- **Display:** Archivo at `font-stretch: 112%`, weight 680, letter-spacing `-0.03em`, line-height 1.04. Headlines `clamp(30px, 4.4vw, 52px)`; the self-host headline goes to 68px.
+- **Display:** Archivo at `font-stretch: 112%`, weight 680, letter-spacing `-0.03em`, line-height 1.04. Headlines `clamp(30px, 4.4vw, 52px)`; the "Own it" headline goes to 68px.
 - **Wordmark:** Archivo 760 at width 122, tracked `-0.035em`, drawn as outlines by `logo/gen.mjs` from a static instance (`logo/ttf/Archivo-760-122.ttf`).
 - **Body:** Archivo 400 at width 100, 17px/1.5; ledes 18 to 20px in `--ink-2`.
-- **The app's own type:** anything that is the app (the rebuilt dashboard, the OG image's form) uses **Geist**, like the real app. The brand never restyles the product.
-- No mono costume. The only mono is real code: `ADMIN_PASSWORD`, `/admin`.
+- **The app's own type:** anything that is the app (the OG images' form) uses **Geist**, like the real app. The brand never restyles the product.
+- No mono costume. The only mono is real code and real terminal output, in the system mono. Terminal bars are drawn as boxes 1ch per block, so they line up in any font.
 
 ### Color: paper, graphite, dropout salmon
 
@@ -56,23 +56,29 @@ Rule: **salmon is the form, graphite is the answer.** Anything you can mark or p
 1. **The filled bubble.** The `a` in survay is a pencil-filled answer bubble. It is the mark, the favicon and the step numbers in the self-host list.
 2. **The timing track.** The column of black dashes down an answer sheet's edge, which scanners read to find each row. It runs down the hero sheet and the OG image.
 3. **The answer row.** `01  (A) (B) (C) (●)` in the README header: question number in `--form-ink`, empty bubbles in salmon, the chosen one in ink.
-4. **The sheet.** The live app and the rebuilt dashboard always sit on a salmon-bordered sheet, never on a device mockup or browser chrome.
+4. **The sheet.** The live app, the dashboard and the terminal always sit on a salmon-bordered sheet, never on a device mockup or browser chrome.
 
 ### Motion
 
-- **Zoom in:** the sheet grows from its spot to the full viewport (top, left, width, height, 420ms, `cubic-bezier(0.2, 0.8, 0.2, 1)`) and shrinks back on Zoom out or Esc in 360ms. The iframe is never moved in the DOM, so your answers survive the zoom.
-- **Reorder:** rows in the rebuilt dashboard slide to their new place (FLIP, 260ms), like the real app's optimistic reorder.
-- Presses scale to 0.97. Reduced motion turns all of it off.
+Motion follows state. Nothing loops and nothing runs on a timer.
+
+- **The bubble fills in:** on load the hero wordmark reads `surv( )y` with an empty salmon bubble. A pencil scribble fills it (720ms, `cubic-bezier(0.77, 0, 0.175, 1)`) and the `a` appears in the negative space. Once, on the hero only.
+- **The timing track is your progress:** its marks are printed salmon and fill with graphite from the top as you answer, all of them when you submit, each mark 12ms after the one above.
+- **The printed form:** until the live app reports in, the sheet shows its form printed in `--form-line`, then crossfades to the real thing, so a Sprite waking from sleep never shows a blank box.
+- **Zoom in:** the sheet grows from its spot to the full viewport (420ms, `cubic-bezier(0.32, 0.72, 0, 1)`) and shrinks back on Zoom out or Esc, pressed in the page or inside the survey (320ms). The iframe never moves in the DOM, so your answers survive the zoom.
+- **Live:** the dot in the results bar pulses when a new answer lands, and the terminal's bars grow with it. Your own picks get a quiet `you` in the results.
+- **Reorder:** dashboard rows slide to their new place (FLIP, 260ms).
+- Presses scale to 0.97; copy buttons fill their bubble. Hover effects only on devices that hover. Reduced motion turns movement off.
 
 ### Iconography
 
-None. Glyphs only: `↗ ↑ ↓ ×`. The Deploy button is Vercel's own image.
+None. Glyphs only: `↗ ↑ ↓ ×`, with the text variation selector so no platform draws them as emoji.
 
 ## Marks
 
 Three directions, drawn from Archivo outlines by `logo/gen.mjs`:
 
-- **a · bubble (picked).** The `a` knocked out of a filled oval. It reads as "survay" and as "answer a" at once, it's the product's radio button, and it holds at 16px as a filled oval. Files: `survay.svg`, `survay-dark.svg`, `mark.svg`, `mark-dark.svg`, `favicon.svg` (follows the system theme), `apple-touch-icon.svg`.
+- **a · bubble (picked).** The `a` knocked out of a filled oval. It reads as "survay" and as "answer a" at once, it's the product's radio button, and it holds at 16px as a filled oval. Files: `survay.svg`, `survay-dark.svg`, `survay-live.svg` (the hero's animated parts), `mark.svg`, `mark-dark.svg`, `favicon.svg` (follows the system theme), `apple-touch-icon.svg`.
 - **b · timing track.** Three dashes before a plain wordmark. Not picked: the dashes need the sheet around them to mean anything; alone they read as a hamburger menu.
 - **c · progress.** A plain wordmark over the app's progress hairline, filled up to the `a`. Not picked: it's the app's quietest detail, and a hairline disappears at 16px.
 
@@ -89,6 +95,7 @@ Hero mockups in `directions/` (shots in the job folder):
 | file                                               | source                            | size        |
 | -------------------------------------------------- | --------------------------------- | ----------- |
 | `site/public/og.png`                               | `assets/og.html`                  | 1200×630    |
+| `public/og.png` (the app, any survey)            | `assets/app-og.html`              | 1200×630    |
 | `.github/header-light.png`, `header-dark.png`      | `assets/readme-{light,dark}.html` | 838×220 @2x |
 | `site/public/apple-touch-icon.png`, `icon-512.png` | `assets/icon.html`                | 180, 512    |
 | `site/public/favicon.svg`                          | `logo/gen.mjs`                    | themed SVG  |

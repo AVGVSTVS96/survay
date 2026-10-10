@@ -121,10 +121,15 @@ async function close() {
   if (motion()) await sheet.animate([full(), box(to)], { duration: 320, easing: ease }).finished
   sheet.classList.remove("zoomed")
   slot.style.height = ""
-  zoom.focus()
+  zoom.focus({ preventScroll: true })
 }
 
 zoom.addEventListener("click", () => void (sheet.classList.contains("zoomed") ? close() : open()))
+$("a.sheet-note").addEventListener("click", (event) => {
+  if (!sheet.classList.contains("zoomed")) return
+  event.preventDefault()
+  void close().then(() => $("#results").scrollIntoView({ behavior: motion() ? "smooth" : "auto" }))
+})
 addEventListener("keydown", (event) => {
   if (event.key === "Escape" && sheet.classList.contains("zoomed")) void close()
 })

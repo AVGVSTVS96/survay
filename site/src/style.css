@@ -718,11 +718,11 @@ body.locked {
   min-height: 30px;
   padding-inline: 18px 10px;
 }
-.cmd span {
+.cmd > span {
   flex: 1;
   white-space: pre;
 }
-.cmd span::before {
+.cmd > span::before {
   content: "$ ";
   color: var(--form-ink);
   user-select: none;
