@@ -26,7 +26,7 @@ One family with a width axis, so the wordmark and the prose share bones.
 - **Wordmark:** Archivo 760 at width 122, tracked `-0.035em`, drawn as outlines by `logo/gen.mjs` from a static instance (`logo/ttf/Archivo-760-122.ttf`).
 - **Body:** Archivo 400 at width 100, 17px/1.5; ledes 18 to 20px in `--ink-2`.
 - **The app's own type:** anything that is the app (the rebuilt dashboard, the OG image's form) uses **Geist**, like the real app. The brand never restyles the product.
-- No mono costume. The only mono is real code: `ADMIN_PASSWORD`, `pnpm db:push`, `/admin`.
+- No mono costume. The only mono is real code: `ADMIN_PASSWORD`, `/admin`.
 
 ### Color: paper, graphite, dropout salmon
 

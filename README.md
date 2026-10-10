@@ -18,17 +18,17 @@ A small, calm survey you can host yourself. One survey per deploy: people answer
 
 The button adds a Neon database and asks for `ADMIN_PASSWORD`. Use a long random password (`openssl rand -base64 24`): it's the only thing guarding `/admin`, and changing it signs everyone out. For extra safety, add a [Vercel Firewall](https://vercel.com/docs/vercel-firewall) rate limit rule on `/admin/login`.
 
-Then create the tables once, from a clone of your repo: `vercel env pull .env.local && pnpm install && pnpm db:push`.
+Each build applies the migrations in `drizzle/` and, on an empty database, adds the demo survey. Open `/admin` and make it yours.
 
 ## Run locally
 
 ```sh
 cp .env.example .env.local   # set DATABASE_URL and ADMIN_PASSWORD
-pnpm install && pnpm db:push && pnpm db:seed
+pnpm install && pnpm db:migrate && pnpm db:seed
 pnpm dev                     # survey at /, dashboard at /admin
 ```
 
-`db:seed` adds a demo survey when there are no questions yet.
+`db:seed` adds the demo survey when there are no questions yet. After changing `lib/db/schema.ts`, run `pnpm db:generate` and commit the new migration.
 
 ## Options
 

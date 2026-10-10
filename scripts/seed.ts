@@ -1,10 +1,10 @@
-import { loadEnvConfig } from "@next/env"
+import nextEnv from "@next/env"
 import { count } from "drizzle-orm"
 import { drizzle } from "drizzle-orm/node-postgres"
 import { Pool } from "pg"
 import { questions, survey } from "../lib/db/schema.ts"
 
-loadEnvConfig(process.cwd())
+nextEnv.loadEnvConfig(process.cwd())
 
 const pool = new Pool({ connectionString: process.env.DATABASE_URL_UNPOOLED ?? process.env.DATABASE_URL })
 const db = drizzle(pool)

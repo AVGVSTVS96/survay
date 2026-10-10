@@ -38,8 +38,7 @@ Pick one of four kinds, write the prompt, move it up or down.
 Your copy runs on your Vercel account with your own database.
 
 1. Click Deploy. Vercel copies the repo, adds a Neon database and asks for an `ADMIN_PASSWORD`. Make it long and random.
-2. Create the tables once from a clone: `pnpm db:push`
-3. Open `/admin` and write your questions.
+2. Open `/admin`. The demo survey is waiting; make it yours.
 
 ### Footer
 
