@@ -2,25 +2,11 @@ import { cookies } from "next/headers"
 import crypto from "crypto"
 
 const COOKIE_NAME = "admin_session"
-const MAX_AGE_SECONDS = 60 * 60 * 24 * 7 // 7 days
-
-// The signing secret. If ADMIN_SESSION_SECRET is set we use it (stable across
-// restarts). Otherwise we generate a strong random secret once per process so
-// the admin never has to manage a secret by hand. The tradeoff is that an
-// auto-generated secret rotates on a full server restart, which just means the
-// admin logs in again — perfectly fine for a single-admin app.
-const globalForSecret = globalThis as unknown as { adminSecret?: string }
-
-function getSecret(): string {
-  if (process.env.ADMIN_SESSION_SECRET) return process.env.ADMIN_SESSION_SECRET
-  if (!globalForSecret.adminSecret) {
-    globalForSecret.adminSecret = crypto.randomBytes(48).toString("base64")
-  }
-  return globalForSecret.adminSecret
-}
+const MAX_AGE_SECONDS = 60 * 60 * 24 * 7
 
 function sign(payload: string): string {
-  return crypto.createHmac("sha256", getSecret()).update(payload).digest("hex")
+  const key = crypto.createHmac("sha256", process.env.ADMIN_PASSWORD ?? "").update("session").digest()
+  return crypto.createHmac("sha256", key).update(payload).digest("hex")
 }
 
 function safeEqual(a: string, b: string): boolean {
@@ -30,11 +16,9 @@ function safeEqual(a: string, b: string): boolean {
   return crypto.timingSafeEqual(ab, bb)
 }
 
-/** Constant-time password check against ADMIN_PASSWORD. */
 export function verifyPassword(input: string): boolean {
   const expected = process.env.ADMIN_PASSWORD
   if (!expected) return false
-  // Hash both sides so timingSafeEqual gets equal-length buffers regardless of input length.
   const inputHash = crypto.createHash("sha256").update(input).digest("hex")
   const expectedHash = crypto.createHash("sha256").update(expected).digest("hex")
   return safeEqual(inputHash, expectedHash)
@@ -46,8 +30,8 @@ export async function createSession() {
   const store = await cookies()
   store.set(COOKIE_NAME, value, {
     httpOnly: true,
-    secure: true,
-    sameSite: process.env.NODE_ENV === "production" ? "lax" : "none",
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
     path: "/",
     maxAge: MAX_AGE_SECONDS,
   })
@@ -61,7 +45,7 @@ export async function destroySession() {
 export async function isAuthenticated(): Promise<boolean> {
   const store = await cookies()
   const raw = store.get(COOKIE_NAME)?.value
-  if (!raw) return false
+  if (!raw || !process.env.ADMIN_PASSWORD) return false
   const [issuedAt, signature] = raw.split(".")
   if (!issuedAt || !signature) return false
   if (!safeEqual(signature, sign(issuedAt))) return false
