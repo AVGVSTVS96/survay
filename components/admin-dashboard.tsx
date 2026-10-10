@@ -1,21 +1,24 @@
 "use client"
 
-import { reorderQuestions } from "@/app/actions/admin"
-import { KIND_LABELS, QuestionEditor } from "@/components/question-editor"
+import { reorderQuestions, setTitle } from "@/app/actions/admin"
+import { QuestionEditor } from "@/components/question-editor"
 import { ResultsView } from "@/components/results-view"
 import { Button } from "@/components/ui/button"
 import type { Question } from "@/lib/db/schema"
+import { KIND_LABELS } from "@/lib/questions"
 import type { QuestionStat } from "@/lib/stats"
 import { cn } from "@/lib/utils"
-import { useState, useTransition } from "react"
+import { useOptimistic, useState, useTransition } from "react"
 
 type Tab = "questions" | "results"
 
 export function AdminDashboard({
+  title,
   questions,
   stats,
   responseCount,
 }: {
+  title: string
   questions: Question[]
   stats: QuestionStat[]
   responseCount: number
@@ -23,15 +26,18 @@ export function AdminDashboard({
   const [tab, setTab] = useState<Tab>("questions")
   const [editingId, setEditingId] = useState<number | null>(null)
   const [creating, setCreating] = useState(false)
-  const [, start] = useTransition()
+  const [error, setError] = useState<string | null>(null)
+  const [ordered, setOrdered] = useOptimistic(questions)
+  const [reordering, start] = useTransition()
 
   function move(index: number, dir: -1 | 1) {
-    const next = index + dir
-    if (next < 0 || next >= questions.length) return
-    const ids = questions.map((q) => q.id)
-    ;[ids[index], ids[next]] = [ids[next], ids[index]]
-    start(() => {
-      reorderQuestions(ids)
+    const next = [...ordered]
+    ;[next[index], next[index + dir]] = [next[index + dir], next[index]]
+    setError(null)
+    start(async () => {
+      setOrdered(next)
+      const res = await reorderQuestions(next.map((q) => q.id))
+      if (res.error) setError(res.error)
     })
   }
 
@@ -57,15 +63,28 @@ export function AdminDashboard({
 
       {tab === "questions" ? (
         <div className="flex flex-col gap-4">
-          {questions.length === 0 && !creating && (
+          <TitleField key={title} title={title} />
+
+          {ordered.length === 0 && !creating && (
             <p className="text-muted-foreground">
               No questions yet. Add your first one below.
             </p>
           )}
 
-          {questions.map((q, i) =>
+          {error && (
+            <p role="alert" className="text-destructive">
+              {error}
+            </p>
+          )}
+
+          {ordered.map((q, i) =>
             editingId === q.id ? (
-              <QuestionEditor key={q.id} question={q} onClose={() => setEditingId(null)} />
+              <QuestionEditor
+                key={q.id}
+                question={q}
+                stat={stats.find((s) => s.question.id === q.id)}
+                onClose={() => setEditingId(null)}
+              />
             ) : (
               <div
                 key={q.id}
@@ -76,7 +95,7 @@ export function AdminDashboard({
                     type="button"
                     aria-label="Move up"
                     onClick={() => move(i, -1)}
-                    disabled={i === 0}
+                    disabled={i === 0 || reordering}
                     className="text-subtle transition-colors hover:text-foreground disabled:opacity-20"
                   >
                     &uarr;
@@ -85,7 +104,7 @@ export function AdminDashboard({
                     type="button"
                     aria-label="Move down"
                     onClick={() => move(i, 1)}
-                    disabled={i === questions.length - 1}
+                    disabled={i === ordered.length - 1 || reordering}
                     className="text-subtle transition-colors hover:text-foreground disabled:opacity-20"
                   >
                     &darr;
@@ -98,7 +117,7 @@ export function AdminDashboard({
                 >
                   <span className="text-foreground text-pretty">{q.prompt}</span>
                   <span className="text-muted-foreground">
-                    {KIND_LABELS[q.kind as keyof typeof KIND_LABELS]}
+                    {KIND_LABELS[q.kind]}
                     {q.required && <span className="text-subtle"> · Required</span>}
                   </span>
                 </button>
@@ -121,8 +140,58 @@ export function AdminDashboard({
       ) : responseCount === 0 ? (
         <p className="text-muted-foreground">No responses yet.</p>
       ) : (
-        <ResultsView stats={stats} />
+        <div className="flex flex-col gap-8">
+          <a
+            href="/admin/export"
+            download
+            className="self-end text-muted-foreground transition-colors hover:text-foreground"
+          >
+            Export CSV
+          </a>
+          <ResultsView stats={stats} />
+        </div>
       )}
     </div>
+  )
+}
+
+function TitleField({ title }: { title: string }) {
+  const [value, setValue] = useState(title)
+  const [error, setError] = useState<string | null>(null)
+  const [saving, start] = useTransition()
+  const dirty = value.trim() !== title
+
+  function save(e: React.FormEvent) {
+    e.preventDefault()
+    setError(null)
+    start(async () => {
+      const res = await setTitle(value)
+      if (res.error) setError(res.error)
+    })
+  }
+
+  return (
+    <form onSubmit={save} className="flex flex-col gap-2">
+      <div className="flex items-center gap-2">
+        <input
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          maxLength={200}
+          placeholder="Survey title (optional)"
+          aria-label="Survey title"
+          className="w-full rounded-lg border border-border bg-card px-4 py-3 text-foreground placeholder:text-subtle outline-none transition-colors focus:border-foreground/50"
+        />
+        {dirty && (
+          <Button type="submit" disabled={saving} className="min-h-11 rounded-lg px-5">
+            {saving ? "Saving" : "Save"}
+          </Button>
+        )}
+      </div>
+      {error && (
+        <p role="alert" className="text-destructive">
+          {error}
+        </p>
+      )}
+    </form>
   )
 }
