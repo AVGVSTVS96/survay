@@ -1,54 +1,40 @@
 "use server"
 
 import { db } from "@/lib/db"
-import { answers, questions, responses, type AnswerValue } from "@/lib/db/schema"
-import { asc } from "drizzle-orm"
+import { answers, responses } from "@/lib/db/schema"
+import { parseAnswer } from "@/lib/questions"
+import type { QuestionStat } from "@/lib/stats"
+import { getPublicStats, getQuestions, publicResults } from "@/lib/survey"
 
-export async function getPublicQuestions() {
-  return db.select().from(questions).orderBy(asc(questions.position), asc(questions.id))
+export type Submission = {
+  shown: number[]
+  answers: Record<number, unknown>
+  website?: string
 }
 
-type SubmitPayload = Record<number, AnswerValue>
+export type SubmitResult =
+  | { ok: true; results: QuestionStat[] | null }
+  | { ok: false; error: string }
 
-export async function submitSurvey(payload: SubmitPayload) {
-  const all = await db.select().from(questions)
-  const byId = new Map(all.map((q) => [q.id, q]))
+export async function submitSurvey(submission: Submission): Promise<SubmitResult> {
+  const ids = new Set(Array.isArray(submission?.shown) ? submission.shown : [])
+  const given: Record<number, unknown> = submission?.answers ?? {}
+  const shown = (await getQuestions()).filter((q) => ids.has(q.id))
+  const parsed = shown.map((q) => ({ q, value: parseAnswer(q, given[q.id]) }))
 
-  // Server-side validation: required questions must have a non-empty answer.
-  for (const q of all) {
-    if (!q.required) continue
-    const v = payload[q.id]
-    const empty =
-      v === undefined ||
-      v === null ||
-      (typeof v === "string" && v.trim() === "") ||
-      (Array.isArray(v) && v.length === 0)
-    if (empty) {
-      return { ok: false as const, error: "Please answer all required questions." }
-    }
+  if (parsed.some(({ q, value }) => q.required && value === null)) {
+    return { ok: false, error: "This survey just changed. Please check your answers." }
   }
 
-  const rows = Object.entries(payload)
-    .map(([qid, value]) => ({ questionId: Number(qid), value }))
-    .filter((r) => byId.has(r.questionId))
-    .filter((r) => {
-      const v = r.value
-      if (v === undefined || v === null) return false
-      if (typeof v === "string" && v.trim() === "") return false
-      if (Array.isArray(v) && v.length === 0) return false
-      return true
+  if (!submission?.website && parsed.length > 0) {
+    await db.transaction(async (tx) => {
+      const [response] = await tx.insert(responses).values({}).returning({ id: responses.id })
+      const rows = parsed.flatMap(({ q, value }) =>
+        value === null ? [] : [{ responseId: response.id, questionId: q.id, value }],
+      )
+      if (rows.length > 0) await tx.insert(answers).values(rows)
     })
-
-  const [response] = await db.insert(responses).values({}).returning()
-  if (rows.length > 0) {
-    await db.insert(answers).values(
-      rows.map((r) => ({
-        responseId: response.id,
-        questionId: r.questionId,
-        value: r.value,
-      })),
-    )
   }
 
-  return { ok: true as const }
+  return { ok: true, results: publicResults ? await getPublicStats() : null }
 }

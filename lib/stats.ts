@@ -1,4 +1,5 @@
 import type { Answer, Question } from "@/lib/db/schema"
+import { parseAnswer } from "@/lib/questions"
 
 export type OptionStat = { label: string; count: number }
 
@@ -24,59 +25,51 @@ export type QuestionStat =
       samples: string[]
     }
 
-export function computeStats(questions: Question[], answers: Answer[]): QuestionStat[] {
-  const byQuestion = new Map<number, Answer[]>()
+export type AnswerRow = Pick<Answer, "questionId" | "value">
+
+function tally(labels: string[], picks: string[]): OptionStat[] {
+  return labels.map((label) => ({ label, count: picks.filter((p) => p === label).length }))
+}
+
+export function computeStats(questions: Question[], answers: AnswerRow[]): QuestionStat[] {
+  const byQuestion = new Map<number, unknown[]>()
   for (const a of answers) {
     const list = byQuestion.get(a.questionId) ?? []
-    list.push(a)
+    list.push(a.value)
     byQuestion.set(a.questionId, list)
   }
 
-  return questions.map((q) => {
-    const list = byQuestion.get(q.id) ?? []
+  return questions.map((q): QuestionStat => {
+    const values = (byQuestion.get(q.id) ?? [])
+      .map((raw) => parseAnswer(q, raw))
+      .filter((v) => v !== null)
 
     if (q.kind === "single" || q.kind === "multi") {
-      const counts = new Map<string, number>()
-      for (const opt of q.options) counts.set(opt, 0)
-      for (const a of list) {
-        const v = a.value
-        if (Array.isArray(v)) {
-          for (const item of v) counts.set(item, (counts.get(item) ?? 0) + 1)
-        } else if (typeof v === "string") {
-          counts.set(v, (counts.get(v) ?? 0) + 1)
-        }
-      }
       return {
         kind: q.kind,
         question: q,
-        total: list.length,
-        options: q.options.map((label) => ({ label, count: counts.get(label) ?? 0 })),
+        total: values.length,
+        options: tally(q.options, values.flat() as string[]),
       }
     }
 
     if (q.kind === "rating") {
       const max = q.scaleMax ?? 5
-      const nums = list
-        .map((a) => (typeof a.value === "number" ? a.value : Number(a.value)))
-        .filter((n) => !Number.isNaN(n))
+      const nums = values as number[]
       const sum = nums.reduce((acc, n) => acc + n, 0)
-      const buckets: OptionStat[] = Array.from({ length: max }, (_, i) => ({
-        label: String(i + 1),
-        count: nums.filter((n) => n === i + 1).length,
-      }))
       return {
         kind: "rating",
         question: q,
         total: nums.length,
         average: nums.length ? Math.round((sum / nums.length) * 10) / 10 : 0,
         max,
-        buckets,
+        buckets: tally(
+          Array.from({ length: max }, (_, i) => String(i + 1)),
+          nums.map(String),
+        ),
       }
     }
 
-    const samples = list
-      .map((a) => (typeof a.value === "string" ? a.value : String(a.value)))
-      .filter((s) => s.trim().length > 0)
-    return { kind: "text", question: q, total: samples.length, samples }
+    return { kind: "text", question: q, total: values.length, samples: values as string[] }
   })
 }
