@@ -1,18 +1,19 @@
 # survay: messaging
 
-Source of truth for the site's words. Numbers come from `facts.json` (run `node site/copy/count.mjs` after the build lands; the line count will move).
+Source of truth for the site's words. Numbers come from `facts.json` (run `bun site/copy/count.mjs` after code changes; the line count moves).
 
 ## Positioning
 
-survay is a small survey app you deploy yourself: one survey, one question at a time, with a dashboard for the results.
+survay is a small survey app you run yourself: one survey, one question at a time, one SQLite file that holds every answer. It's a template you copy, not a service you sign up for.
 
 ## Hero
 
 **One survey, one question at a time.**
 
-A small survey app you deploy yourself, with its own dashboard and your own database.
+A small survey app you run yourself. Every answer lands in one file you own.
 
 - Frame caption: `This is the real app. Go ahead, answer it.`
+- Frame caption once you've submitted: `You're in the results below.` (links to #results)
 - Zoom control: `Zoom in` / `Zoom out` (aria-label: `Open the survey full screen` / `Close full screen`)
 
 ## Sections
@@ -21,24 +22,28 @@ A small survey app you deploy yourself, with its own dashboard and your own data
 
 **See how everyone answered.**
 
-The demo's results are public. Answer the survey above and your vote is in there.
+The demo's results are public. Answer the survey above and watch your vote land.
 
-Text answers stay hidden on the public page.
+- Caption: `Text answers stay off the public page.`
+- Link: `Open full results`
 
-### 2. Questions
+### 2. Dashboard
 
 **Write it in the dashboard.**
 
 Pick one of four kinds, write the prompt, move it up or down.
 
-### 3. Self-host
+- Window label: `Try it. Nothing here is saved.`
 
-**One survey per deploy. That's the point.**
+### 3. Own it
 
-Your copy runs on your Vercel account with your own database.
+**One survey per copy. That's the point.**
 
-1. Click Deploy. Vercel copies the repo, adds a Neon database and asks for an `ADMIN_PASSWORD`. Make it long and random.
-2. Open `/admin`. The demo survey is waiting; make it yours.
+Your copy is a folder on your computer. One file in it, `data/survay.db`, holds every answer.
+
+1. **Make a copy and start it.** (the real `bun survay` output)
+2. **Put it online.** A Sprite sleeps when nobody's answering and wakes on the next visit. Any computer with a disk works too.
+3. **Read the answers anywhere.** (the real `survay results` output, live from the demo)
 
 ### Footer
 
@@ -46,19 +51,19 @@ Your copy runs on your Vercel account with your own database.
 
 ## CTA labels
 
-| where           | label                                                    | goes to                       |
-| --------------- | -------------------------------------------------------- | ----------------------------- |
-| hero, primary   | `Deploy your own`                                        | #self-host                    |
-| hero, secondary | `GitHub`                                                 | github.com/AVGVSTVS96/survay  |
-| dashboard frame | `Try it. Nothing here is saved.`                         | (label on the rebuilt editor) |
-| results section | `Open full results`                                      | demo `/results`               |
-| self-host       | Vercel's own Deploy button image, alt `Deploy to Vercel` | Vercel clone URL              |
-| footer          | `GitHub`                                                 | github.com/AVGVSTVS96/survay  |
+| where | label | goes to |
+| --- | --- | --- |
+| hero, primary | `Run your own` | #own |
+| hero, secondary | `GitHub` | github.com/AVGVSTVS96/survay |
+| results section | `Open full results` | demo `/results` |
+| dashboard frame | `Try it. Nothing here is saved.` | (label on the live sandbox) |
+| command lines | `Copy` / `Copied` | clipboard |
+| footer | `GitHub` | github.com/AVGVSTVS96/survay |
 
 ## Meta
 
-- Title: `survay: a small survey app you host yourself`
-- Description: `One survey per deploy, one question at a time. Deploy to Vercel with your own database. MIT.`
+- Title: `survay: a small survey app you run yourself`
+- Description: `One survey, one question at a time. Bun, one SQLite file and a dashboard, on your computer or a Sprite. MIT.`
 
 ## OG image
 
@@ -70,9 +75,8 @@ Your copy runs on your Vercel account with your own database.
 
 - Hero frame (iframe `title`): `The survay demo survey, running live`
 - Results frame (iframe `title`): `Public results for the demo survey`
-- Question editor visual: `The survay dashboard, editing a multiple choice question`
+- Dashboard frame (iframe `title`): `The survay dashboard. Edits stay in this tab.`
 - Wordmark: `survay`
-- Deploy button: `Deploy to Vercel`
 - OG image: `survay. One survey, one question at a time.`
 
 ## Demo survey (verbatim, keep as is)
@@ -82,25 +86,23 @@ Your copy runs on your Vercel account with your own database.
 3. **write a 1200 page essay on mannerisms and honeybees** (text, optional), description `zip it! 🤐`
 4. **how do you feel about cheeseburgers disappearing from existence?** (checkboxes, required): fucking terrified mate / a little bothered but i’ll survive / couldnt care less mate
 
-The live deploy still reads "about about" in question 4; the seed fixes it.
-
 ## X launch post (draft)
 
-Follows `x-pipeline/08-writing-style-guide.md` (T1). Media: 10s screen recording of answering the demo, then the results filling in.
+Follows `x-pipeline/08-writing-style-guide.md` (T1). Media: 10s screen recording of answering the demo while the results and the terminal fill in.
 
 ```
 found a survey app i'd left in a private repo, so i finished it and open sourced it
 
-> one survey per deploy, one question at a time
-> 4 question kinds: multiple choice, checkboxes, rating, text
-> dashboard for editing questions and reading results, with csv export
-> deploy to vercel with your own neon database
+> one survey per copy, one question at a time
+> runs on your computer: bun and one sqlite file
+> deploy/sprite.sh puts it online, asleep until someone answers
+> survay results prints the answers in your terminal
 
-about 1,200 lines of code. the demo asks how you feel about cheeseburgers disappearing from existence
+about {linesOfCodeRounded} lines of code. the demo asks how you feel about cheeseburgers disappearing from existence
 
 link in replies
 ```
 
-First reply: `https://github.com/AVGVSTVS96/survay` plus the demo link.
+First reply: `https://github.com/AVGVSTVS96/survay` plus the site link.
 
-Footnote for the line count: non-blank lines in the app's own .ts/.tsx files (app/, components/, lib/), not counting the generated shadcn parts in components/ui. `site/copy/count.mjs` counts them.
+Footnote for the line count: non-blank lines in the app's own `.ts`/`.tsx` files under `src/`. `site/copy/count.mjs` counts them.

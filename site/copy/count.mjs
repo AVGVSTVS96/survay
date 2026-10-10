@@ -12,41 +12,33 @@ function* walk(dir) {
   }
 }
 
-const files = ["app", "components", "lib"]
-  .flatMap((dir) => [...walk(join(root, dir))])
+const files = [...walk(join(root, "src"))]
   .map((path) => relative(root, path))
-  .filter((path) => /\.tsx?$/.test(path) && !path.startsWith("components/ui/"));
+  .filter((path) => /\.tsx?$/.test(path) && !path.endsWith(".d.ts"));
 
 const lines = files
-  .map(
-    (path) =>
-      readFileSync(join(root, path), "utf8")
-        .split("\n")
-        .filter((line) => line.trim()).length,
-  )
+  .map((path) => readFileSync(join(root, path), "utf8").split("\n").filter((line) => line.trim()).length)
   .reduce((a, b) => a + b, 0);
 
-const schema = readFileSync(join(root, "lib/db/schema.ts"), "utf8");
-const kinds = schema.match(/type QuestionKind = (.+)/)[1].match(/"\w+"/g).length;
-const labelsSource = files
-  .map((path) => readFileSync(join(root, path), "utf8"))
-  .find((src) => src.includes("KIND_LABELS: Record"));
-const kindLabels = [...labelsSource.match(/KIND_LABELS[^{]*\{([^}]*)\}/)[1].matchAll(/"([^"]+)"/g)].map(
-  (m) => m[1],
-);
+const questions = readFileSync(join(root, "src/questions.ts"), "utf8");
+const kindLabels = [...questions.match(/KIND_LABELS[^{]*\{([^}]*)\}/)[1].matchAll(/"([^"]+)"/g)].map((m) => m[1]);
+const pkg = JSON.parse(readFileSync(join(root, "package.json"), "utf8"));
 
 const facts = {
   name: "survay",
-  demo: "https://survey-platform-taupe.vercel.app",
+  site: "https://survay-site.vercel.app",
+  demo: "https://survay-b3zbd.sprites.app",
   repo: "https://github.com/AVGVSTVS96/survay",
   license: "MIT",
-  questionKinds: kinds,
+  questionKinds: kindLabels.length,
   questionKindLabels: kindLabels,
-  surveysPerDeploy: 1,
-  selfHost: ["Vercel", "Neon", "ADMIN_PASSWORD"],
+  surveysPerCopy: 1,
+  runtime: "Bun",
+  database: "one SQLite file, data/survay.db",
+  dependencies: Object.keys(pkg.dependencies),
   linesOfCode: lines,
   linesOfCodeRounded: Math.ceil(lines / 100) * 100,
-  linesOfCodeNote: `Non-blank lines in ${files.length} .ts/.tsx files under app/, components/ and lib/, not counting components/ui (generated shadcn parts). Counted by site/copy/count.mjs.`,
+  linesOfCodeNote: `Non-blank lines in ${files.length} .ts/.tsx files under src/, not counting tests. Counted by site/copy/count.mjs.`,
   countedAt: new Date().toISOString().slice(0, 10),
 };
 

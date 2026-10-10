@@ -1,14 +1,27 @@
 {
   "name": "survay",
-  "demo": "https://survey-platform-taupe.vercel.app",
+  "site": "https://survay-site.vercel.app",
+  "demo": "https://survay-b3zbd.sprites.app",
   "repo": "https://github.com/AVGVSTVS96/survay",
   "license": "MIT",
   "questionKinds": 4,
-  "questionKindLabels": ["Multiple choice", "Checkboxes", "Text", "Rating"],
-  "surveysPerDeploy": 1,
-  "selfHost": ["Vercel", "Neon", "ADMIN_PASSWORD"],
-  "linesOfCode": 1147,
-  "linesOfCodeRounded": 1200,
-  "linesOfCodeNote": "Non-blank lines in 17 .ts/.tsx files under app/, components/ and lib/, not counting components/ui (generated shadcn parts). Counted by site/copy/count.mjs.",
+  "questionKindLabels": [
+    "Multiple choice",
+    "Checkboxes",
+    "Rating",
+    "Text"
+  ],
+  "surveysPerCopy": 1,
+  "runtime": "Bun",
+  "database": "one SQLite file, data/survay.db",
+  "dependencies": [
+    "bun-plugin-tailwind",
+    "react",
+    "react-dom",
+    "tailwindcss"
+  ],
+  "linesOfCode": 2148,
+  "linesOfCodeRounded": 2200,
+  "linesOfCodeNote": "Non-blank lines in 18 .ts/.tsx files under src/, not counting tests. Counted by site/copy/count.mjs.",
   "countedAt": "2026-10-10"
 }

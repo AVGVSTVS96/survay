@@ -133,4 +133,45 @@ write(
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180"><rect width="180" height="180" fill="#fbfaf6"/><path fill-rule="evenodd" fill="${ink.light}" d="${round(tile)}"/></svg>\n`,
 );
 
+function liveWord() {
+  const glyphs = setWord("survay");
+  const a = glyphs[4];
+  const rx = a.width * 0.64;
+  const ry = xHeight * 0.62;
+  const shift = rx * 2 - a.width - tracking * 0.9;
+  const cx = a.x + rx - tracking * 0.45;
+  const cy = -xHeight / 2;
+  const letters = glyphs
+    .map((g, i) => (i < 4 ? g.path : i === 4 ? "" : font.charToGlyph(g.ch).getPath(g.x + shift, 0, size).toPathData(2)))
+    .join("");
+  const letter = font.charToGlyph("a");
+  const s = size * 0.6;
+  const box = letter.getPath(0, 0, s).getBoundingBox();
+  const hole = letter.getPath(cx - (box.x1 + box.x2) / 2, cy - (box.y1 + box.y2) / 2, s).toPathData(2);
+  const stroke = ry * 0.62;
+  const strokes = Math.ceil((rx * 2) / (stroke * 0.62));
+  const points = Array.from({ length: strokes + 1 }, (_, i) => {
+    const x = cx - rx + (i * rx * 2) / strokes;
+    const y = i % 2 ? cy + ry + stroke / 2 : cy - ry - stroke / 2;
+    return `${round(String(x + 0.0001))} ${round(String(y + 0.0001))}`;
+  });
+  return { letters, bubble: ellipse(cx, cy, rx, ry), hole, scribble: `M${points.join("L")}`, stroke, width: glyphs.at(-1).end + shift };
+}
+
+const lw = liveWord();
+const [vx, vy, vw, vh] = svg({ ...bw, fill: "" }).match(/viewBox="([^"]+)"/)[1].split(" ");
+write(
+  "survay-live.svg",
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vx} ${vy} ${vw} ${vh}" class="live-word" role="img" aria-label="survay">` +
+    `<defs><mask id="live-a" maskUnits="userSpaceOnUse" x="${vx}" y="${vy}" width="${vw}" height="${vh}">` +
+    `<rect x="${vx}" y="${vy}" width="${vw}" height="${vh}" fill="#fff"/><path d="${round(lw.hole)}" fill="#000"/></mask>` +
+    `<clipPath id="live-bubble"><path d="${round(lw.bubble)}"/></clipPath></defs>` +
+    `<path fill="currentColor" d="${round(lw.letters)}"/>` +
+    `<path class="ring" fill="none" d="${round(lw.bubble)}"/>` +
+    `<g mask="url(#live-a)"><g clip-path="url(#live-bubble)">` +
+    `<path class="scribble" fill="none" stroke="currentColor" stroke-width="${round(String(lw.stroke + 0.0001))}" stroke-linecap="round" stroke-linejoin="round" pathLength="1" d="${lw.scribble}"/>` +
+    `<path class="fill" fill="currentColor" d="${round(lw.bubble)}"/>` +
+    `</g></g></svg>\n`,
+);
+
 console.log(`wordmark ${Math.round(bw.width)} wide, x-height ${Math.round(xHeight)}`);

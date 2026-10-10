@@ -1,22 +1,28 @@
-import { readFileSync } from "node:fs";
-import { resolve } from "node:path";
-import { defineConfig, type Plugin } from "vite-plus";
+import { readFileSync } from "node:fs"
+import { resolve } from "node:path"
+import { defineConfig, type Plugin } from "vite-plus"
 
-const logo = (name: string) =>
-  readFileSync(resolve(import.meta.dirname, "brand/logo", name), "utf8")
-    .trim()
-    .replace(/ fill="#[0-9a-f]+"/, ' fill="currentColor"');
+import facts from "./copy/facts.json" with { type: "json" }
 
-function inlineLogos(): Plugin {
+const svg = (name: string) => readFileSync(resolve(import.meta.dirname, "brand/logo", name), "utf8").trim()
+const logo = (name: string) => svg(name).replace(/ fill="#[0-9a-f]+"/, ' fill="currentColor"')
+
+function inline(): Plugin {
   return {
-    name: "survay:logos",
+    name: "survay:inline",
     transformIndexHtml: (html) =>
-      html.replaceAll("<!--wordmark-->", logo("survay.svg")).replaceAll("<!--mark-->", logo("mark.svg")),
-  };
+      html
+        .replaceAll("<!--wordmark-live-->", svg("survay-live.svg"))
+        .replaceAll("<!--wordmark-->", logo("survay.svg"))
+        .replaceAll("%demo%", facts.demo)
+        .replaceAll("%demo-host%", new URL(facts.demo).host)
+        .replaceAll("%repo%", facts.repo)
+        .replaceAll("%site%", facts.site),
+  }
 }
 
 export default defineConfig({
-  plugins: [inlineLogos()],
+  plugins: [inline()],
   build: { target: "es2022" },
   css: { postcss: {} },
   fmt: { semi: false, ignorePatterns: ["*.html"] },
@@ -25,4 +31,4 @@ export default defineConfig({
     rules: { "vite-plus/prefer-vite-plus-imports": "error" },
     options: { typeAware: true, typeCheck: true },
   },
-});
+})
