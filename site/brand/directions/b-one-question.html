@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>survay · direction b · one question</title>
+<style>
+@font-face { font-family: Instrument; src: url(../fonts/instrument-var.woff2) format("woff2"); font-weight: 400 700; font-stretch: 75% 100%; }
+:root { --bg: #ffffff; --ink: #0d0d0c; --ink-2: #6b6a66; --blue: #2c4bff; --hair: rgb(13 13 12 / .1) }
+* { box-sizing: border-box; margin: 0 }
+body { background: var(--bg); color: var(--ink); font: 400 17px/1.5 Instrument, sans-serif; }
+nav { display: flex; justify-content: space-between; align-items: center; height: 64px; padding: 0 32px; font-size: 15px }
+nav b { font-weight: 600; font-size: 19px; letter-spacing: -.02em }
+nav span a { color: var(--ink-2); margin-left: 24px; text-decoration: none }
+.hero { text-align: center; padding: 88px 24px 0 }
+.eyebrow { color: var(--ink-2); font-size: 16px }
+h1 { font-weight: 560; font-stretch: 80%; font-size: 128px; line-height: .92; letter-spacing: -.045em; margin: 20px auto 0; max-width: 11ch }
+h1 em { font-style: normal; color: var(--blue) }
+.lede { margin: 28px auto 0; max-width: 34ch; font-size: 20px; color: var(--ink-2) }
+.cta { display: flex; gap: 10px; justify-content: center; margin-top: 32px }
+.btn { height: 46px; padding: 0 20px; border-radius: 999px; display: inline-flex; align-items: center; font-weight: 600; text-decoration: none; font-size: 15px }
+.dark { background: var(--blue); color: #fff } .line { box-shadow: inset 0 0 0 1px var(--hair); color: var(--ink) }
+.stage { margin: 72px auto 0; max-width: 1100px; border-radius: 20px 20px 0 0; border: 1px solid var(--hair); border-bottom: 0; overflow: hidden; position: relative }
+.stage .bar { display: flex; justify-content: space-between; padding: 14px 18px; font-size: 13px; color: var(--ink-2); border-bottom: 1px solid var(--hair) }
+iframe { width: 100%; height: 520px; border: 0; display: block }
+</style>
+</head>
+<body>
+<nav><b>survay</b><span><a href="#">Demo</a><a href="#">Dashboard</a><a href="#">GitHub</a></span></nav>
+<section class="hero">
+  <p class="eyebrow">An open-source survey, one per deploy</p>
+  <h1>Ask <em>one</em> thing at a time.</h1>
+  <p class="lede">A small survey you host yourself. One question at a time, every answer counted.</p>
+  <div class="cta"><a class="btn dark" href="#">Deploy your own</a><a class="btn line" href="#">Try the demo ↓</a></div>
+  <div class="stage"><div class="bar"><span>survey-platform-taupe.vercel.app</span><span>Expand ↗</span></div>
+  <iframe src="https://survey-platform-taupe.vercel.app/?embed=1" title="survay demo"></iframe></div>
+</section>
+</body>
+</html>

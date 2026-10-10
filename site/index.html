@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>survay: a small survey app you host yourself</title>
+<meta name="description" content="One survey per deploy, one question at a time. Deploy to Vercel with your own database. MIT.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#f5f3ed">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0f0e0d">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://survay.vercel.app">
+<meta property="og:title" content="survay">
+<meta property="og:description" content="One survey, one question at a time. A small survey app you deploy yourself.">
+<meta property="og:image" content="https://survay.vercel.app/og.png?v=1">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="survay. One survey, one question at a time.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://survay.vercel.app/og.png?v=1">
+<link rel="preload" href="/fonts/archivo-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/src/style.css">
+<script type="module" src="/src/main.ts"></script>
+</head>
+<body>
+<header class="nav wrap">
+  <a class="nav-word" href="/" aria-label="survay"><!--wordmark--></a>
+  <nav aria-label="Sections">
+    <a href="#results">Results</a>
+    <a href="#dashboard">Dashboard</a>
+    <a href="#self-host">Self-host</a>
+    <a href="https://github.com/AVGVSTVS96/survay">GitHub</a>
+  </nav>
+</header>
+
+<main>
+  <section class="hero wrap" aria-labelledby="hero-title">
+    <div class="hero-copy">
+      <div class="hero-word" aria-hidden="true"><!--wordmark--></div>
+      <h1 id="hero-title">One survey, one question at a time.</h1>
+      <p class="lede">A small survey app you deploy yourself, with its own dashboard and your own database.</p>
+      <div class="ctas">
+        <a class="btn solid" href="#self-host">Deploy your own</a>
+        <a class="btn line" href="https://github.com/AVGVSTVS96/survay">GitHub</a>
+      </div>
+    </div>
+
+    <div class="sheet-slot">
+      <div class="sheet" id="sheet">
+        <div class="sheet-bar">
+          <span class="sheet-note">This is the real app. Go ahead, answer it.</span>
+          <button class="zoom" id="zoom" type="button" aria-label="Open the survey full screen" aria-expanded="false">
+            <span class="zoom-in">Zoom in</span><span class="zoom-out">Zoom out</span>
+            <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9 9 3M4.5 3H9v4.5"/></svg>
+          </button>
+        </div>
+        <div class="sheet-body">
+          <div class="timing" aria-hidden="true"></div>
+          <div class="frame">
+            <iframe id="survey" src="https://survey-platform-taupe.vercel.app/?embed=1" title="The survay demo survey, running live"></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="results wrap" id="results" aria-labelledby="results-title">
+    <div class="results-copy">
+      <h2 id="results-title">See how everyone answered.</h2>
+      <p>The demo's results are public. Answer the survey above and your vote is in there.</p>
+      <a class="arrow-link" href="https://survey-platform-taupe.vercel.app/results">Open full results <span aria-hidden="true">↗</span></a>
+    </div>
+    <figure class="window">
+      <div class="window-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="url" data-url>survey-platform-taupe.vercel.app/results</span></div>
+      <div class="window-body">
+        <iframe id="results-frame" src="https://survey-platform-taupe.vercel.app/results?embed=1" title="Public results for the demo survey" loading="lazy"></iframe>
+      </div>
+      <figcaption>Text answers stay hidden on the public page.</figcaption>
+    </figure>
+  </section>
+
+  <section class="editor-section" id="dashboard" aria-labelledby="dashboard-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="dashboard-title">Write it in the dashboard.</h2>
+        <p>Pick one of four kinds, write the prompt, move it up or down.</p>
+      </div>
+      <figure class="window app-mock" aria-label="The survay dashboard, editing a multiple choice question">
+        <div class="window-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="url" data-url>your-survay.vercel.app/admin</span><span class="try">Try it. Nothing here is saved.</span></div>
+        <div class="app" id="app"></div>
+      </figure>
+    </div>
+  </section>
+
+  <section class="selfhost wrap" id="self-host" aria-labelledby="selfhost-title">
+    <h2 id="selfhost-title">One survey per deploy. That's the point.</h2>
+    <div class="selfhost-body">
+      <p>Your copy runs on your Vercel account with your own database.</p>
+      <ol class="steps">
+        <li>
+          <span class="num" aria-hidden="true">1</span>
+          <div>
+            <p>Click Deploy. Vercel copies the repo and adds a Neon database.</p>
+            <a class="deploy" id="deploy" href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FAVGVSTVS96%2Fsurvay&amp;project-name=survay&amp;repository-name=survay&amp;env=ADMIN_PASSWORD&amp;envDescription=A%20long%20random%20password%20for%20%2Fadmin&amp;products=%5B%7B%22type%22%3A%22integration%22%2C%22protocol%22%3A%22storage%22%2C%22productSlug%22%3A%22neon%22%2C%22integrationSlug%22%3A%22neon%22%7D%5D"><img src="https://vercel.com/button" alt="Deploy to Vercel" width="92" height="32"></a>
+          </div>
+        </li>
+        <li>
+          <span class="num" aria-hidden="true">2</span>
+          <p>Set <code>ADMIN_PASSWORD</code> to something long and random.</p>
+        </li>
+        <li>
+          <span class="num" aria-hidden="true">3</span>
+          <p>Open <code>/admin</code> and write your questions.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+</main>
+
+<footer class="foot wrap">
+  <a class="foot-word" href="/" aria-label="survay"><!--wordmark--></a>
+  <p>MIT licensed. Source on <a href="https://github.com/AVGVSTVS96/survay">GitHub</a>.</p>
+</footer>
+</body>
+</html>

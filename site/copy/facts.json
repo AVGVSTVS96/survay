@@ -1,0 +1,23 @@
+{
+  "name": "survay",
+  "demo": "https://survey-platform-taupe.vercel.app",
+  "repo": "https://github.com/AVGVSTVS96/survay",
+  "license": "MIT",
+  "questionKinds": 4,
+  "questionKindLabels": [
+    "Multiple choice",
+    "Checkboxes",
+    "Text",
+    "Rating"
+  ],
+  "surveysPerDeploy": 1,
+  "selfHost": [
+    "Vercel",
+    "Neon",
+    "ADMIN_PASSWORD"
+  ],
+  "linesOfCode": 1147,
+  "linesOfCodeRounded": 1200,
+  "linesOfCodeNote": "Non-blank lines in 17 .ts/.tsx files under app/, components/ and lib/, not counting components/ui (generated shadcn parts). Counted by site/copy/count.mjs.",
+  "countedAt": "2026-10-10"
+}
