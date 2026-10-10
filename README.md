@@ -1,4 +1,7 @@
-# survay
+<h1><picture>
+  <source media="(prefers-color-scheme: dark)" srcset=".github/header-dark.png">
+  <img src=".github/header-light.png" alt="survay" width="838">
+</picture></h1>
 
 A small, calm survey you can host yourself. One survey per deploy: people answer one question at a time, and you edit questions and read results from a password-protected dashboard.
 

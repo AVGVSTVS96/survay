@@ -1,0 +1,12 @@
+# survay · references
+
+Bassim's X "inspiration" folder, pulled Oct 10 2026 (the export stops in late September). Studied one idea deeply instead of a mood board: the printed form, made digital.
+
+| ref | take | deliberately not taken |
+| --- | --- | --- |
+| Optical answer sheets (OMR "bubble" forms) | Dropout ink for the form and graphite for answers, so color carries meaning. The timing track down the edge. Bubbles with letters in them. | The scanner-grid density, tiny print, the "test day" dread. No Scantron name or logo. |
+| @heydamir, "Imagine if your boarding pass printed like this" · x.com/heydamir/status/2094779813072363554 | A physical paper artifact rebuilt as UI, taken seriously. | Print animation, perforations, receipt skeuomorphism. |
+| @dqnamo, "Give your users a receipt" · x.com/dqnamo/status/2087184765765943533 | A small, real document as the hero visual. | Monospace receipt type. |
+| @Ekaeoq on IBM's Graphic Design Guide · x.com/Ekaeoq/status/1994752718460604552 | One idea held to with discipline: one family (Archivo) across widths. | IBM's blue, stripes and Plex. |
+| @oliverhamrin on Jacqueline Casey · x.com/oliverhamrin/status/2091117071308370089 | "Take a simple idea and take it seriously": the filled bubble is the only mark. | Swiss poster layouts. |
+| commonplace and hex (approved brands) | The bar: real UIs, assets from code, one color with one meaning. | commonplace's mono and red, hex's hard shadows and poppy blocks. |

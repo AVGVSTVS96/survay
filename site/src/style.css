@@ -18,7 +18,7 @@
   --sheet: oklch(0.992 0.002 90);
   --ink: #1d1c1a;
   --ink-2: #5d5a54;
-  --ink-3: #7d7971;
+  --ink-3: #6f6b64;
   --form: #e8735c;
   --form-ink: #b13f28;
   --form-line: #f1b8aa;
@@ -159,7 +159,7 @@ body.locked { overflow: hidden }
 .q-arrows button:disabled { opacity: 0.2; cursor: default }
 .q-open { flex: 1; text-align: left; display: flex; flex-direction: column; gap: 2px; min-width: 0 }
 .q-open span:first-child { overflow-wrap: anywhere }
-.editor { border: 1px solid var(--app-border); background: var(--app-card); border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 22px; align-self: start }
+.editor { border: 1px solid var(--app-border); background: var(--app-card); border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 22px }
 .kinds { display: flex; flex-wrap: wrap; gap: 8px }
 .chip { border: 1px solid var(--app-border); border-radius: 10px; padding: 7px 12px; color: var(--app-muted); transition: border-color 0.15s, color 0.15s }
 .chip:hover { border-color: color-mix(in oklch, var(--app-fg) 40%, transparent) }
@@ -217,4 +217,17 @@ body.locked { overflow: hidden }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto }
   *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important }
+}
+
+.title-field { display: flex; flex-direction: column; gap: 8px; margin-bottom: -8px }
+.app-head p { margin-top: 2px }
+.locked { width: 100% }
+.chip:disabled { opacity: 0.4; cursor: default; border-color: var(--app-border) }
+.foot-actions { display: flex; align-items: center; gap: 16px }
+.del:hover { color: oklch(0.55 0.17 25) }
+.save.danger { background: oklch(0.55 0.17 25); color: #fff }
+.add-q { align-self: flex-start; margin-top: -16px }
+.foot-word { color: var(--ink) }
+@media (max-width: 480px) {
+  .note-lead { display: none }
 }

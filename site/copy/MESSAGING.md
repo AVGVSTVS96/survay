@@ -37,8 +37,8 @@ Pick one of four kinds, write the prompt, move it up or down.
 
 Your copy runs on your Vercel account with your own database.
 
-1. Click Deploy. Vercel copies the repo and adds a Neon database.
-2. Set `ADMIN_PASSWORD` to something long and random.
+1. Click Deploy. Vercel copies the repo, adds a Neon database and asks for an `ADMIN_PASSWORD`. Make it long and random.
+2. Create the tables once from a clone: `pnpm db:push`
 3. Open `/admin` and write your questions.
 
 ### Footer
@@ -51,6 +51,7 @@ Your copy runs on your Vercel account with your own database.
 | --- | --- | --- |
 | hero, primary | `Deploy your own` | #self-host |
 | hero, secondary | `GitHub` | github.com/AVGVSTVS96/survay |
+| dashboard frame | `Try it. Nothing here is saved.` | (label on the rebuilt editor) |
 | results section | `Open full results` | demo `/results` |
 | self-host | Vercel's own Deploy button image, alt `Deploy to Vercel` | Vercel clone URL |
 | footer | `GitHub` | github.com/AVGVSTVS96/survay |
