@@ -1,7 +1,10 @@
 "use client"
 
-import { KIND_LABELS } from "@/components/question-editor"
+import { KIND_LABELS } from "@/lib/questions"
 import type { QuestionStat } from "@/lib/stats"
+import { useState } from "react"
+
+const PAGE = 5
 
 function Bar({ label, count, total }: { label: string; count: number; total: number }) {
   const pct = total === 0 ? 0 : Math.round((count / total) * 100)
@@ -66,24 +69,38 @@ export function ResultsView({ stats }: { stats: QuestionStat[] }) {
             </div>
           )}
 
-          {s.kind === "text" && (
-            <div className="flex flex-col gap-2">
-              {s.samples.length === 0 ? (
-                <p className="text-muted-foreground">No responses yet.</p>
-              ) : (
-                s.samples.map((text, i) => (
-                  <p
-                    key={i}
-                    className="rounded-lg border border-border bg-card px-4 py-3 text-foreground text-pretty"
-                  >
-                    {text}
-                  </p>
-                ))
-              )}
-            </div>
-          )}
+          {s.kind === "text" && <TextAnswers samples={s.samples} />}
         </section>
       ))}
+    </div>
+  )
+}
+
+function TextAnswers({ samples }: { samples: string[] }) {
+  const [shown, setShown] = useState(PAGE)
+
+  if (samples.length === 0) return <p className="text-muted-foreground">No answers yet.</p>
+
+  return (
+    <div className="flex flex-col gap-2">
+      {samples.slice(0, shown).map((text, i) => (
+        <p
+          key={i}
+          className="rounded-lg border border-border bg-card px-4 py-3 text-foreground text-pretty whitespace-pre-line break-words"
+        >
+          {text}
+        </p>
+      ))}
+      {shown < samples.length && (
+        <button
+          type="button"
+          onClick={() => setShown((n) => n + PAGE * 2)}
+          className="self-start text-muted-foreground transition-colors hover:text-foreground"
+        >
+          Show more
+          <span className="text-subtle"> · {samples.length - shown} left</span>
+        </button>
+      )}
     </div>
   )
 }

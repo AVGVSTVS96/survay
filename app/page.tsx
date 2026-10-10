@@ -1,17 +1,30 @@
-import { getPublicQuestions } from "@/app/actions/survey"
+import { PageShell } from "@/components/page-shell"
 import { SurveyForm } from "@/components/survey-form"
+import { getQuestions, getTitle } from "@/lib/survey"
+import type { Metadata } from "next"
 
 export const dynamic = "force-dynamic"
 
-export default async function Page() {
-  const questions = await getPublicQuestions()
+export async function generateMetadata(): Promise<Metadata> {
+  const title = await getTitle()
+  return title ? { title: { absolute: title }, openGraph: { title } } : {}
+}
+
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: Promise<{ embed?: string }>
+}) {
+  const [{ embed }, questions, title] = await Promise.all([searchParams, getQuestions(), getTitle()])
 
   return (
-    <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col justify-center gap-10 px-5 py-12">
-      <header className="flex flex-col gap-1">
-        <p className="text-muted-foreground">A few quick questions</p>
-      </header>
-      <SurveyForm questions={questions} />
-    </main>
+    <PageShell embed={embed === "1"}>
+      {title && (
+        <header className="flex flex-col gap-1">
+          <p className="text-muted-foreground">{title}</p>
+        </header>
+      )}
+      <SurveyForm questions={questions} embed={embed === "1"} />
+    </PageShell>
   )
 }

@@ -157,6 +157,11 @@
   }
 }
 
+html[data-embed],
+html[data-embed] body {
+  background: transparent;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

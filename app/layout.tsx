@@ -1,4 +1,3 @@
-import { Analytics } from "@vercel/analytics/next"
 import type { Metadata, Viewport } from "next"
 import { Geist } from "next/font/google"
 import "./globals.css"
@@ -8,10 +7,14 @@ const geistSans = Geist({
   variable: "--font-geist-sans",
 })
 
+const host = process.env.VERCEL_PROJECT_PRODUCTION_URL
+
 export const metadata: Metadata = {
-  title: "Survey",
+  metadataBase: host ? new URL(`https://${host}`) : undefined,
+  title: { default: "Survey", template: "%s · Survey" },
   description: "A calm, minimal survey.",
-  generator: "v0.app",
+  openGraph: { title: "Survey", description: "A calm, minimal survey.", type: "website" },
+  twitter: { card: "summary_large_image" },
   manifest: "/manifest.json",
   icons: {
     icon: [
@@ -26,8 +29,6 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
   colorScheme: "light dark",
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#fcfcfa" },
@@ -44,7 +45,6 @@ export default function RootLayout({
     <html lang="en" className={`${geistSans.variable} bg-background`}>
       <body className="antialiased">
         {children}
-        {process.env.NODE_ENV === "production" && <Analytics />}
       </body>
     </html>
   )
