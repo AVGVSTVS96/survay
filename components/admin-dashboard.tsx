@@ -172,13 +172,16 @@ function TitleField({ title }: { title: string }) {
 
   return (
     <form onSubmit={save} className="flex flex-col gap-2">
+      <label htmlFor="survey-title" className="text-muted-foreground">
+        Title
+      </label>
       <div className="flex items-center gap-2">
         <input
+          id="survey-title"
           value={value}
           onChange={(e) => setValue(e.target.value)}
           maxLength={200}
-          placeholder="Survey title (optional)"
-          aria-label="Survey title"
+          placeholder="Shown above the first question (optional)"
           className="w-full rounded-lg border border-border bg-card px-4 py-3 text-foreground placeholder:text-subtle outline-none transition-colors focus:border-foreground/50"
         />
         {dirty && (

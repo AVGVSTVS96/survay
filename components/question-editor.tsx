@@ -264,7 +264,7 @@ export function QuestionEditor({
       )}
 
       {confirming === "delete" ? (
-        <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border pt-4">
+        <div key="confirm" className="flex flex-wrap items-center justify-between gap-3 border-t border-border pt-4">
           <span className="text-foreground">
             Delete this question{stat?.total ? ` and its ${stat.total} ${stat.total === 1 ? "answer" : "answers"}` : ""}?
           </span>
@@ -288,7 +288,7 @@ export function QuestionEditor({
           </div>
         </div>
       ) : (
-        <div className="flex items-center justify-between gap-3 border-t border-border pt-4">
+        <div key="actions" className="flex items-center justify-between gap-3 border-t border-border pt-4">
           {question ? (
             <button
               type="button"
